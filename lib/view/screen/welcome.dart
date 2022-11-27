@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/welcome_controller.dart';
+import '../../core/constant/color.dart';
 import '../../core/constant/image_asset.dart';
 import '../../core/constant/sizes.dart';
 import '../widget/mywidget.dart';
+import 'qrcodescanner.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -15,19 +17,94 @@ class WelcomePage extends StatelessWidget {
     Get.put(WelcomeController());
     return MyWidget(child: OrientationBuilder(builder: (context, orientation) {
       print(orientation);
-      return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Center(
-                child: SizedBox(
-                    height: AppSizes.heightScreen / 2,
-                    child: Image.asset(AppImageAsset.logo, fit: BoxFit.cover))),
-            Center(
-                child: GetBuilder<WelcomeController>(
-                    builder: (controller) => Text(controller.msg,
-                        style: Theme.of(context).textTheme.headline2)))
-          ]);
+      return ListView(children: [
+        SizedBox(height: 25),
+        Center(
+            child: SizedBox(
+                height: AppSizes.heightScreen / 3,
+                child: Image.asset(AppImageAsset.logo, fit: BoxFit.cover))),
+        SizedBox(height: 25),
+        Center(
+            child: GetBuilder<WelcomeController>(
+                builder: (controller) => Text(
+                    controller.serverError
+                        ? "Erreur lors de la connexion !!!"
+                        : controller.msg,
+                    style: Theme.of(context).textTheme.headline2!.copyWith(
+                        color: controller.serverError
+                            ? Colors.red
+                            : Colors.black)))),
+        SizedBox(height: 25),
+        GetBuilder<WelcomeController>(
+            builder: (controller) => Visibility(
+                visible: controller.serverError,
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(width: 25),
+                          Expanded(
+                              child: TextFormField(
+                                  controller: controller.txtServerIp,
+                                  maxLines: 1,
+                                  keyboardType: TextInputType.text,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: InputDecoration(
+                                      hintText: "Adresse du serveur",
+                                      hintStyle: const TextStyle(fontSize: 14),
+                                      floatingLabelBehavior:
+                                          FloatingLabelBehavior.always,
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              horizontal: 30, vertical: 10),
+                                      label: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 9),
+                                          child: Text("Adresse du serveur")),
+                                      suffixIcon: IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(Icons
+                                              .supervised_user_circle_outlined)),
+                                      border: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: AppColor.black),
+                                          borderRadius:
+                                              BorderRadius.circular(16))))),
+                          SizedBox(width: 25),
+                          ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                  foregroundColor: AppColor.white,
+                                  backgroundColor: AppColor.black),
+                              onPressed: () async {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                  builder: (context) => const QRViewExample(),
+                                ))
+                                    .then((value) async {
+                                  if (value != null) {
+                                    controller.txtServerIp.text = value;
+                                    await controller.tryConnect();
+                                  }
+                                });
+                              },
+                              icon: Icon(Icons.qr_code),
+                              label: Text("QR Code")),
+                          SizedBox(width: 25),
+                          ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                  foregroundColor: AppColor.white,
+                                  backgroundColor: AppColor.green2),
+                              onPressed: () async {
+                                await controller.tryConnect();
+                              },
+                              icon: Icon(Icons.refresh),
+                              label: Text("Actualiser")),
+                          SizedBox(width: 25)
+                        ])))),
+        SizedBox(height: 25)
+      ]);
     }));
   }
 }

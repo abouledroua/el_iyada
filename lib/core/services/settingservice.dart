@@ -7,7 +7,10 @@ class SettingServices extends GetxService {
 
   Future<SettingServices> init() async {
     sharedPrefs = await SharedPreferences.getInstance();
-    AppData.serverIP = sharedPrefs.getString('ServerAdress') ?? "10.0.2.2";
+    String s = sharedPrefs.getString('ServerAdress') ?? "";
+    if (s == "") sharedPrefs.setString('ServerAdress', "10.0.2.2");
+    AppData.serverIP = sharedPrefs.getString('ServerAdress')!;
+    //AppData.serverIP = "33.33.33.33";
     return this;
   }
 }

@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import '../class/patient.dart';
 import '../services/settingservice.dart';
 import 'color.dart';
@@ -15,7 +14,7 @@ import 'sizes.dart';
 class AppData {
   static String webVersion = "1.0";
   static String www = "iyada", serverIP = "";
-  static int timeOut = 18;
+  static int timeOut = 10;
   static List<Patient> patients = [];
 
   static final bool isMobile =
@@ -191,57 +190,5 @@ class AppData {
                 color: AppColor.red);
           }
         });
-  }
-
-  static Future<bool> getListPatient() async {
-    String serverDir = AppData.getServerDirectory();
-    var url = "$serverDir/GET_PATIENTS.php";
-    print("url=$url");
-    patients.clear();
-    Uri myUri = Uri.parse(url);
-    http
-        .post(myUri, body: {})
-        .timeout(Duration(seconds: timeOut))
-        .then((response) async {
-          if (response.statusCode == 200) {
-            late Patient patient;
-            late int sexe;
-            var responsebody = jsonDecode(response.body);
-            for (var m in responsebody) {
-              sexe = int.parse(m['SEXE']);
-              patient = Patient(
-                  name: m['NAME'],
-                  adresse: m['ADR'],
-                  gs: int.parse(m['GS']),
-                  tel: m['TEL'],
-                  age: int.parse(m['AGE']),
-                  cb: m['CODE_BARRE'],
-                  isFemme: (sexe == 2),
-                  isHomme: (sexe == 1),
-                  sexe: sexe,
-                  typeAge: int.parse(m['TYPE']));
-              patients.add(patient);
-              return true;
-            }
-          } else {
-            patients.clear();
-            print('Probleme de Connexion avec le serveur !!!');
-            AppData.mySnackBar(
-                title: 'Fiche Album',
-                message: "Probleme de Connexion avec le serveur !!!",
-                color: AppColor.red);
-            return false;
-          }
-        })
-        .catchError((error) {
-          patients.clear();
-          print("erreur : $error");
-          AppData.mySnackBar(
-              title: 'Fiche Album',
-              message: "Probleme de Connexion avec le serveur !!!",
-              color: AppColor.red);
-          return false;
-        });
-    return false;
   }
 }
