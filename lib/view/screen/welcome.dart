@@ -6,14 +6,13 @@ import '../../controller/welcome_controller.dart';
 import '../../core/constant/image_asset.dart';
 import '../../core/constant/sizes.dart';
 import '../widget/mywidget.dart';
-import 'package:progress_indicators/progress_indicators.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    WelcomeController wc = Get.put(WelcomeController());
+    Get.put(WelcomeController());
     return MyWidget(child: OrientationBuilder(builder: (context, orientation) {
       print(orientation);
       return Column(
@@ -25,8 +24,9 @@ class WelcomePage extends StatelessWidget {
                     height: AppSizes.heightScreen / 2,
                     child: Image.asset(AppImageAsset.logo, fit: BoxFit.cover))),
             Center(
-                child: ScalingText(wc.msg,
-                    style: Theme.of(context).textTheme.headline2))
+                child: GetBuilder<WelcomeController>(
+                    builder: (controller) => Text(controller.msg,
+                        style: Theme.of(context).textTheme.headline2)))
           ]);
     }));
   }

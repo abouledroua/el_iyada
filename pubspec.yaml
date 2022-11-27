@@ -35,11 +35,34 @@ dependencies:
   get: any
   shared_preferences: any
   progress_indicators: any
-  #animated_text_kit: any
+  http: any
+  awesome_dialog: any
+  intl: any
+  url_launcher: any
+  flutter_launcher_icons: any
+  animated_text_kit: any
+  azlistview: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/logo.png"
+  web:
+    generate: true
+    image_path: "assets/images/logo.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/logo.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -75,6 +98,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: Arabtype
+      fonts:
+        - asset: assets/fonts/arabtype.ttf
+    #       - asset: fonts/Schyler-Italic.ttf
+    #         style: italic
+    - family: Traditional
+      fonts:
+        - asset: assets/fonts/trado.ttf
+        - asset: assets/fonts/tradbdo.ttf
+          weight: 700
   # fonts:
   #   - family: Schyler
   #     fonts:
