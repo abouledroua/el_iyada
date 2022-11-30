@@ -9,6 +9,8 @@ import '../../core/constant/data.dart';
 import '../../core/constant/image_asset.dart';
 import '../../core/constant/sizes.dart';
 import '../../core/services/settingservice.dart';
+import '../../controller/list_patients_controller.dart';
+import '../../controller/list_rdvs_controller.dart';
 import '../widget/mywidget.dart';
 import 'qrcodescanner.dart';
 
@@ -19,6 +21,8 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(KeyboardController());
     Get.put(WelcomeController());
+    Get.put(ListPatientsController());
+    Get.put(ListRDVsController());
     return MyWidget(
         child: ListView(children: [
       SizedBox(height: 25),

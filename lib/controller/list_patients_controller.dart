@@ -15,6 +15,7 @@ class ListPatientsController extends GetxController {
   String query = "";
   int nbPatient = 0;
   List<Patient> patients = [];
+  late TextEditingController txtName;
 
   updateBooleans({required newloading, required newerror}) {
     loading = newloading;
@@ -94,9 +95,16 @@ class ListPatientsController extends GetxController {
   }
 
   @override
+  void onClose() {
+    txtName.dispose();
+    super.onClose();
+  }
+
+  @override
   void onInit() {
     WidgetsFlutterBinding.ensureInitialized();
     AppSizes.setSizeScreen(Get.context);
+    txtName = TextEditingController();
     getPatient();
     super.onInit();
   }

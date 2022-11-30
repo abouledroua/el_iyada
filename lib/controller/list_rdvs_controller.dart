@@ -22,6 +22,31 @@ class ListRDVsController extends GetxController {
     update();
   }
 
+  Future<bool> onWillPop() async {
+    return (await showDialog(
+            context: Get.context!,
+            builder: (context) => AlertDialog(
+                    title: Row(children: [
+                      Icon(Icons.exit_to_app_sharp, color: AppColor.red),
+                      const Padding(
+                          padding: EdgeInsets.only(left: 8.0),
+                          child: Text('Etes-vous sur ?'))
+                    ]),
+                    content: const Text(
+                        "Voulez-vous vraiment quitter l'application ?"),
+                    actions: <Widget>[
+                      TextButton(
+                          onPressed: () => Get.back(result: false),
+                          child: Text('Non',
+                              style: TextStyle(color: AppColor.red))),
+                      TextButton(
+                          onPressed: () => Get.back(result: true),
+                          child: Text('Oui',
+                              style: TextStyle(color: AppColor.green)))
+                    ]))) ??
+        false;
+  }
+
   Future getListRdvToday() async {
     if (!loading) {
       updateBooleans(newloading: true, newerror: false);

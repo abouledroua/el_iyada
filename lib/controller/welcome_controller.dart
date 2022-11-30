@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
-import '../view/screen/homepage.dart';
+import '../view/screen/list_rdvs.dart';
 
 class WelcomeController extends GetxController {
   String msg = "";
@@ -37,7 +37,7 @@ class WelcomeController extends GetxController {
           if (response.statusCode == 200) {
             var responsebody = jsonDecode(response.body);
             if (responsebody == "1") {
-              Get.off(() => const HomePage());
+              Get.off(() => const ListRDVs());
             }
           } else {
             print('Probleme de Connexion avec le serveur !!!');
