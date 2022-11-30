@@ -6,6 +6,9 @@ import 'view/screen/welcome.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // hide keyboard on start
+  SystemChannels.textInput.invokeMethod('TextInput.hide');
+  // force orientation landscape only
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   await initialService();
@@ -31,21 +34,26 @@ class MyApp extends StatelessWidget {
             textTheme: const TextTheme(
                 headline1: TextStyle(
                     color: Colors.black,
-                    fontSize: 32,
+                    fontSize: 26,
                     fontWeight: FontWeight.bold,
                     fontFamily: "Traditional"),
                 headline2: TextStyle(
                     color: Colors.black,
-                    fontSize: 26,
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Traditional"),
+                headline3: TextStyle(
+                    color: Colors.black,
+                    fontSize: 17,
                     fontWeight: FontWeight.bold,
                     fontFamily: "Traditional"),
                 bodyText1: TextStyle(
-                    color: Colors.blueGrey,
-                    fontSize: 16,
+                    color: Colors.black,
+                    fontSize: 14,
                     fontFamily: "Traditional"),
                 bodyText2: TextStyle(
                     color: Colors.black,
-                    fontSize: 12,
+                    fontSize: 11,
                     fontFamily: "Traditional"),
                 button: TextStyle(
                     fontWeight: FontWeight.bold, fontFamily: "Traditional"))));

@@ -16,24 +16,26 @@ class AppColor {
   static const Color green2 = Color.fromARGB(255, 33, 139, 39);
   static const Color white = Colors.white;
   static const Color primary = Color(0xffF2786D);
-  static const Color purple = Colors.deepPurple;
+  static const Color purpleDeep = Colors.deepPurple;
 
-  static const Color enfant = Colors.orange;
-  static Color enfantClair = Colors.orange.shade50;
+  static const Color orange = Colors.orange;
+  static Color orangeClaire = Colors.orange.shade50;
 
-  static const Color parent = Colors.purple;
-  static Color parentClair = Colors.purple.shade100;
+  static const Color purple = Colors.purple;
+  static Color purpleClair = Colors.purple.shade100;
 
-  static const Color groupe = Colors.cyan;
-  static Color groupeClair = Colors.cyan.shade50;
+  static Color patient = Colors.green.shade700;
 
-  static const Color enseignant = Colors.brown;
+  static const Color cyan = Colors.cyan;
+  static Color cyanClair = Colors.cyan.shade50;
 
-  static const Color message = Color.fromARGB(255, 40, 114, 42);
+  static const Color brown = Colors.brown;
 
-  static const Color annocne = Color.fromARGB(255, 50, 64, 134);
+  static const Color vertPers = Color.fromARGB(255, 40, 114, 42);
 
-  static const Color gallery = Colors.pink;
+  static const Color bleuFacebook = Color.fromARGB(255, 50, 64, 134);
+
+  static const Color pink = Colors.pink;
 
   static List<Color> lightColor = [
     Colors.blue.shade100,
@@ -55,7 +57,6 @@ class AppColor {
     Colors.indigo.shade100,
     Colors.grey.shade100,
     Colors.yellow.shade100,
-    Colors.black12,
     Colors.amberAccent.shade100,
     Colors.blueAccent.shade100,
     Colors.purpleAccent.shade100,

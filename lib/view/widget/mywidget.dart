@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../controller/keyboard_controller.dart';
 import '../../core/constant/color.dart';
 
 class MyWidget extends StatelessWidget {
@@ -37,35 +38,35 @@ class MyWidget extends StatelessWidget {
           //     alignment: Alignment.topCenter,
           //    child: Container(
           //  constraints: const BoxConstraints(maxWidth: AppSizes.maxWidth),
-          child: Scaffold(
-              backgroundColor: color ??
-                  (backgroudImage != null
-                      ? Colors.transparent
-                      : AppColor.white),
-              appBar: title!.isEmpty
-                  ? null
-                  : AppBar(
-                      iconTheme: const IconThemeData(color: AppColor.black),
-                      elevation: 0,
-                      actions: actions,
-                      centerTitle: true,
-                      backgroundColor:
-                          color != null ? AppColor.white : Colors.transparent,
-                      leading: leading ??
-                          (Navigator.canPop(context)
-                              ? IconButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  icon: const Icon(Icons.arrow_back))
-                              : null),
-                      title: FittedBox(
-                          child: Text(title!,
-                              style: Theme.of(context).textTheme.headline1))),
-              floatingActionButton: floatingActionButton,
-              drawer: drawer,
-              resizeToAvoidBottomInset: true,
-              body: child)) //)
+          child: GetBuilder<KeyboardController>(
+        builder: (controller) => Scaffold(
+            backgroundColor: color ??
+                (backgroudImage != null ? Colors.transparent : AppColor.white),
+            appBar: title!.isEmpty || controller.keyboadrShow
+                ? null
+                : AppBar(
+                    iconTheme: const IconThemeData(color: AppColor.black),
+                    elevation: 0,
+                    actions: actions,
+                    centerTitle: true,
+                    backgroundColor:
+                        color != null ? AppColor.white : Colors.transparent,
+                    leading: leading ??
+                        (Navigator.canPop(context)
+                            ? IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(Icons.arrow_back))
+                            : null),
+                    title: FittedBox(
+                        child: Text(title!,
+                            style: Theme.of(context).textTheme.headline1))),
+            floatingActionButton: floatingActionButton,
+            drawer: drawer,
+            resizeToAvoidBottomInset: true,
+            body: child),
+      )) //)
     ]));
   }
 }

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:get/get.dart';
-import '../core/class/patient.dart';
 import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
+import '../view/screen/homepage.dart';
 
 class WelcomeController extends GetxController {
   String msg = "";
@@ -18,23 +18,48 @@ class WelcomeController extends GetxController {
     update();
   }
 
-  close() {
-    //  Get.offAllNamed(AppRoute.login);
-  }
-
   @override
   void onClose() {
     txtServerIp.dispose();
     super.onClose();
   }
 
-  getListPatient() async {
+  getConnect() async {
     serverError = false;
     String serverDir = AppData.getServerDirectory();
-    var url = "$serverDir/GET_PATIENTS.php";
+    var url = "$serverDir/TRY_CONNECT.php";
+    print("url=$url");
+    Uri myUri = Uri.parse(url);
+    http
+        .post(myUri, body: {})
+        .timeout(Duration(seconds: AppData.timeOut))
+        .then((response) async {
+          if (response.statusCode == 200) {
+            var responsebody = jsonDecode(response.body);
+            if (responsebody == "1") {
+              Get.off(() => const HomePage());
+            }
+          } else {
+            print('Probleme de Connexion avec le serveur !!!');
+            serverError = true;
+            update();
+          }
+        })
+        .catchError((error) {
+          print("erreur : $error");
+          serverError = true;
+          update();
+        });
+  }
+
+/*
+  getListRdvToDay() async {
+    String serverDir = AppData.getServerDirectory();
+    var url = "$serverDir/GET_RDVS_TODAY.php";
     print("url=$url");
     AppData.patients.clear();
     Uri myUri = Uri.parse(url);
+
     http
         .post(myUri, body: {})
         .timeout(Duration(seconds: AppData.timeOut))
@@ -57,7 +82,7 @@ class WelcomeController extends GetxController {
                   sexe: sexe,
                   typeAge: int.parse(m['TYPE']));
               AppData.patients.add(patient);
-              updateMessage(newMsg: 'Chargement en cours ...');
+              Get.to(() => const HomePage());
             }
           } else {
             AppData.patients.clear();
@@ -73,10 +98,11 @@ class WelcomeController extends GetxController {
           update();
         });
   }
+*/
 
   tryConnect() async {
     updateMessage(newMsg: 'Connection en cours ...');
-    await getListPatient();
+    await getConnect();
   }
 
   @override

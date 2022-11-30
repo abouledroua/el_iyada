@@ -6,7 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-import '../class/patient.dart';
 import '../services/settingservice.dart';
 import 'color.dart';
 import 'sizes.dart';
@@ -15,7 +14,6 @@ class AppData {
   static String webVersion = "1.0";
   static String www = "iyada", serverIP = "";
   static int timeOut = 10;
-  static List<Patient> patients = [];
 
   static final bool isMobile =
       (defaultTargetPlatform == TargetPlatform.android);

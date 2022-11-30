@@ -43,6 +43,7 @@ dependencies:
   animated_text_kit: any
   azlistview: any
   qr_code_scanner: any
+  flutter_keyboard_visibility: any
 
 dev_dependencies:
   flutter_test:

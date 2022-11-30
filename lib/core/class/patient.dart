@@ -1,13 +1,14 @@
 import 'package:azlistview/azlistview.dart';
 
 class Patient extends ISuspensionBean {
-  String name, adresse, cb, tel;
+  String name, adresse, cb, tel, ageS;
   int age, sexe, typeAge, gs;
   bool isHomme, isFemme;
   Patient(
       {required this.cb,
       required this.typeAge,
       required this.age,
+      required this.ageS,
       required this.gs,
       required this.tel,
       required this.name,
