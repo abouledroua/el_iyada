@@ -37,14 +37,14 @@ class MenuPrincipal extends StatelessWidget {
       MenuButton(
           color: AppColor.patient,
           icon: Icons.search,
-          text: "Patient",
+          text: "Patients",
           onPressed: () {
             contr.updatePage(newPage: 1);
           }),
       MenuButton(
           color: AppColor.orange,
           icon: Icons.today,
-          text: "Patie",
+          text: "Rendez-vous",
           onPressed: () {
             contr.updatePage(newPage: 2);
           }),
@@ -54,7 +54,7 @@ class MenuPrincipal extends StatelessWidget {
           text: "Actualiser",
           onPressed: () {
             contr.updatePage(newPage: 3);
-          }),
+          })
     ]);
   }
 
@@ -66,5 +66,5 @@ class MenuPrincipal extends StatelessWidget {
       TextButton.icon(
           onPressed: onPressed,
           icon: Icon(icon, color: color),
-          label: Text(text, style: TextStyle(color: color)));
+          label: Text(text, style: TextStyle(color: color, fontSize: 16)));
 }

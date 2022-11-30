@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColor {
   static Color amber = Colors.amber.shade700;
+  static Color yellowClaire = Colors.yellow.shade200;
   static Color appBarTitle = Colors.grey.shade700;
   static const Color greyFonce = Color.fromARGB(255, 220, 220, 220);
   static Color greyShade = Colors.grey.shade500;
@@ -11,6 +12,7 @@ class AppColor {
   static const Color blue1 = Colors.blue;
   static const Color blue2 = Color.fromARGB(255, 50, 64, 134);
   static Color red = Colors.red.shade400;
+  static Color redClair = Colors.red.shade200;
   static Color greenClair = Colors.green.shade100;
   static Color green = Colors.green.shade600;
   static const Color green2 = Color.fromARGB(255, 33, 139, 39);
@@ -25,6 +27,7 @@ class AppColor {
   static Color purpleClair = Colors.purple.shade100;
 
   static Color patient = Colors.green.shade700;
+  static Color rdv = Colors.brown;
 
   static const Color cyan = Colors.cyan;
   static Color cyanClair = Colors.cyan.shade50;

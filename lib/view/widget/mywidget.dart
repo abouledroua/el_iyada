@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/keyboard_controller.dart';
 import '../../core/constant/color.dart';
 
 class MyWidget extends StatelessWidget {
@@ -10,14 +9,12 @@ class MyWidget extends StatelessWidget {
   final Widget? floatingActionButton;
   String? title;
   final List<Widget>? actions;
-  String? backgroudImage;
   Color? color;
   Widget? drawer, leading;
 
   MyWidget({
     Key? key,
     required this.child,
-    this.backgroudImage,
     this.color,
     this.title,
     this.drawer,
@@ -30,27 +27,15 @@ class MyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     title ??= "";
     return SafeArea(
-        child: Stack(children: [
-      if (backgroudImage != null)
-        Positioned.fill(
-            child: Image(image: AssetImage(backgroudImage!), fit: BoxFit.fill)),
-      Container(
-          //     alignment: Alignment.topCenter,
-          //    child: Container(
-          //  constraints: const BoxConstraints(maxWidth: AppSizes.maxWidth),
-          child: GetBuilder<KeyboardController>(
-        builder: (controller) => Scaffold(
-            backgroundColor: color ??
-                (backgroudImage != null ? Colors.transparent : AppColor.white),
-            appBar: title!.isEmpty || controller.keyboadrShow
+        child: Scaffold(
+            appBar: title!.isEmpty
                 ? null
                 : AppBar(
                     iconTheme: const IconThemeData(color: AppColor.black),
                     elevation: 0,
                     actions: actions,
                     centerTitle: true,
-                    backgroundColor:
-                        color != null ? AppColor.white : Colors.transparent,
+                    backgroundColor: color ?? AppColor.white,
                     leading: leading ??
                         (Navigator.canPop(context)
                             ? IconButton(
@@ -65,8 +50,6 @@ class MyWidget extends StatelessWidget {
             floatingActionButton: floatingActionButton,
             drawer: drawer,
             resizeToAvoidBottomInset: true,
-            body: child),
-      )) //)
-    ]));
+            body: child));
   }
 }

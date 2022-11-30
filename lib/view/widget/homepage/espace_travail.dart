@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../controller/keyboard_controller.dart';
 import '../../../core/constant/sizes.dart';
 import 'espace_travail_widget.dart';
 import 'menu_principal.dart';
@@ -10,9 +12,13 @@ class EspaceTravail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(children: [
       Expanded(child: EspaceTravailWidget()),
-      Container(
-          constraints: BoxConstraints(maxWidth: AppSizes.widthScreen / 6),
-          child: MenuPrincipal())
+      GetBuilder<KeyboardController>(
+          builder: (controller) => Visibility(
+              visible: !controller.keyboadrShow,
+              child: Container(
+                  constraints:
+                      BoxConstraints(maxWidth: AppSizes.widthScreen / 5),
+                  child: MenuPrincipal())))
     ]);
   }
 }

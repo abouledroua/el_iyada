@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../controller/list_patients_controller.dart';
 import '../../../core/class/patient.dart';
-import '../buildheaderlists.dart';
+import '../../../core/constant/color.dart';
 
 class BuildListItemListPatient extends StatelessWidget {
   final Patient item;
@@ -14,12 +14,13 @@ class BuildListItemListPatient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tag = item.getSuspensionTag();
-    final offstage = !item.isShowSuspension;
     return Column(children: [
-      Offstage(offstage: offstage, child: BuildHeaderLists(tag: tag)),
       ListTile(
-          title: Text(item.name, style: Theme.of(context).textTheme.headline3),
+          title: Text(item.name,
+              style: Theme.of(context).textTheme.headline3!.copyWith(
+                  color: item.sexe == 2 ? AppColor.pink : AppColor.black)),
+          trailing:
+              Text(item.dateC, style: Theme.of(context).textTheme.bodyText1),
           subtitle: Row(children: [
             Text("${item.ageS}",
                 style:

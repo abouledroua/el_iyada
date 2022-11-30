@@ -13,6 +13,7 @@ import 'dart:async';
 class ListPatientsController extends GetxController {
   bool loading = false, error = false;
   String query = "";
+  int nbPatient = 0;
   List<Patient> patients = [];
 
   updateBooleans({required newloading, required newerror}) {
@@ -23,6 +24,7 @@ class ListPatientsController extends GetxController {
 
   Future getPatient() async {
     updateBooleans(newloading: true, newerror: false);
+    nbPatient = 0;
     String serverDir = AppData.getServerDirectory();
     var url = "$serverDir/GET_PATIENTS.php";
     print("url=$url");
@@ -41,7 +43,6 @@ class ListPatientsController extends GetxController {
               sexe = int.parse(m['SEXE']);
               age = m['AGE'];
               typeAge = m['TYPE'];
-
               patient = Patient(
                   name: m['NAME'],
                   adresse: m['ADR'],
@@ -55,15 +56,18 @@ class ListPatientsController extends GetxController {
                               : ' jours'),
                   age: int.parse(m['AGE']),
                   cb: m['CODE_BARRE'],
+                  dateC: m['DATE_CONSULT'],
                   isFemme: (sexe == 2),
                   isHomme: (sexe == 1),
                   sexe: sexe,
                   typeAge: int.parse(m['TYPE']));
               patients.add(patient);
-              updateBooleans(newloading: false, newerror: false);
+              nbPatient++;
             }
+            updateBooleans(newloading: false, newerror: false);
           } else {
             patients.clear();
+            nbPatient = 0;
             updateBooleans(newloading: false, newerror: true);
             AppData.mySnackBar(
                 title: 'Liste des Patients',
@@ -75,6 +79,7 @@ class ListPatientsController extends GetxController {
         .catchError((error) {
           print("erreur : $error");
           patients.clear();
+          nbPatient = 0;
           updateBooleans(newloading: false, newerror: true);
           AppData.mySnackBar(
               title: 'Liste des Patients',
