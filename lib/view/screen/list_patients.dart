@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/list_patients_controller.dart';
 import '../widget/list_patients/empty_list_patient.dart';
-import '../widget/list_patients/list_patient_widget.dart';
+import '../widget/list_patients/list_view_patient.dart';
 import '../widget/loadingwidget.dart';
 import '../widget/mywidget.dart';
 
@@ -16,20 +16,19 @@ class ListPatients extends StatelessWidget {
         //  actions: controller.myActions(),
         title: "Liste des Patients",
         child: GestureDetector(
-          onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
-          },
-          child: GetBuilder<ListPatientsController>(
-              builder: (controller) => Visibility(
-                  visible: controller.loading,
-                  replacement: Visibility(
-                      visible: controller.patients.isEmpty,
-                      replacement: const ListPatientWidget(),
-                      child: const EmptyListPatient()),
-                  child: const LoadingWidget())),
-        ));
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: GetBuilder<ListPatientsController>(
+                builder: (controller) => Visibility(
+                    visible: controller.loading,
+                    replacement: Visibility(
+                        visible: controller.patients.isEmpty,
+                        replacement: const ListViewPatients(),
+                        child: const EmptyListPatient()),
+                    child: const LoadingWidget()))));
   }
 }

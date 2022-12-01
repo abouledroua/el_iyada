@@ -86,8 +86,8 @@ class WelcomePage extends StatelessWidget {
                             onPressed: () async {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(
-                                builder: (context) => const QRViewExample(),
-                              ))
+                                      builder: (context) =>
+                                          const QRViewExample()))
                                   .then((value) async {
                                 if (value != null) {
                                   controller.txtServerIp.text = value;

@@ -10,6 +10,8 @@ import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
 import 'dart:async';
 
+import '../view/screen/list_patients.dart';
+
 class ListPatientsController extends GetxController {
   bool loading = false, error = false;
   String query = "";
@@ -90,6 +92,7 @@ class ListPatientsController extends GetxController {
   }
 
   updateQuery(String newValue) {
+    txtName.text = newValue;
     query = newValue;
     update();
   }
@@ -107,5 +110,12 @@ class ListPatientsController extends GetxController {
     txtName = TextEditingController();
     getPatient();
     super.onInit();
+  }
+
+  search() {
+    if (txtName.text.isNotEmpty) {
+      query = txtName.text;
+      Get.to(() => ListPatients());
+    }
   }
 }

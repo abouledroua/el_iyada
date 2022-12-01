@@ -7,6 +7,7 @@ import '../widget/list_rdvs/empty_list_rdv.dart';
 import '../widget/list_rdvs/list_rdv_widget.dart';
 import '../widget/loadingwidget.dart';
 import '../widget/mywidget.dart';
+import 'search_patient.dart';
 
 class ListRDVs extends StatelessWidget {
   const ListRDVs({Key? key}) : super(key: key);
@@ -16,7 +17,11 @@ class ListRDVs extends StatelessWidget {
     return GetBuilder<ListRDVsController>(
         builder: (controller) => MyWidget(
                 actions: [
-                  IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                  IconButton(
+                      onPressed: () {
+                        Get.to(() => SearchPatient());
+                      },
+                      icon: Icon(Icons.search)),
                   IconButton(
                       onPressed: () {
                         controller.getListRdvToday();
