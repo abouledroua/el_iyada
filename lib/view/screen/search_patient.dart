@@ -20,15 +20,22 @@ class SearchPatient extends StatelessWidget {
             },
             child: Column(children: [
               Spacer(),
-              Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Row(children: [
-                    Expanded(
-                        child: GetBuilder<ListPatientsController>(
-                            builder: (controller) => TextFormField(
+              GetBuilder<ListPatientsController>(
+                  builder: (controller) => Visibility(
+                      visible: controller.filter,
+                      child: Row(children: [
+                        CircularProgressIndicator.adaptive(),
+                        SizedBox(width: 20),
+                        Text('Recherche en cours ...')
+                      ]),
+                      replacement: Row(children: [
+                        Spacer(flex: 3),
+                        Expanded(
+                            flex: 8,
+                            child: TextFormField(
                                 controller: controller.txtName,
                                 maxLines: 1,
-                                autofocus: true,
+                                //     autofocus: true,
                                 keyboardType: TextInputType.name,
                                 textInputAction: TextInputAction.search,
                                 onFieldSubmitted: (value) =>
@@ -63,33 +70,41 @@ class SearchPatient extends StatelessWidget {
                                         borderSide:
                                             BorderSide(color: AppColor.black),
                                         borderRadius:
-                                            BorderRadius.circular(16)))))),
-                    SizedBox(width: 25),
-                    ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: AppColor.white,
-                            backgroundColor: AppColor.black),
-                        onPressed: () async {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => const QRViewExample()))
-                              .then((value) async {
-                            if (value != null) {
-                              ListPatientsController contr = Get.find();
-                              int i, cbValue = int.parse(value);
-                              for (var item in contr.patients) {
-                                i = int.parse(item.cb);
-                                if (i == cbValue) {
-                                  contr.updateQuery(item.name);
-                                  break;
+                                            BorderRadius.circular(16))))),
+                        Spacer(flex: 3),
+                        ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                foregroundColor: AppColor.white,
+                                backgroundColor: AppColor.black),
+                            onPressed: () async {
+                              Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const QRViewExample()))
+                                  .then((data) async {
+                                if (data != null) {
+                                  print('cb = ' + data);
+                                  String cbNew = data;
+                                  cbNew = cbNew.substring(0, cbNew.length - 1);
+                                  print('cb = ' + cbNew);
+                                  ListPatientsController contr = Get.find();
+                                  int i, cbValue = int.parse(cbNew);
+                                  print('cb = $cbValue');
+                                  for (var item in contr.allPatients) {
+                                    i = int.parse(item.cb);
+                                    if (i == cbValue) {
+                                      print('i found it !!!!');
+                                      contr.updateQuery(item.name);
+                                      break;
+                                    }
+                                  }
                                 }
-                              }
-                            }
-                          });
-                        },
-                        icon: Icon(Icons.bar_chart_rounded),
-                        label: Text("Code Barre")),
-                  ])),
+                              });
+                            },
+                            icon: Icon(Icons.bar_chart_rounded),
+                            label: Text("Code Barre")),
+                        Spacer()
+                      ]))),
               Spacer(),
               GetBuilder<KeyboardController>(
                   builder: (controller) => Visibility(

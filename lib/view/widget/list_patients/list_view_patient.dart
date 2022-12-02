@@ -10,7 +10,7 @@ class ListViewPatients extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ListPatientsController>(builder: (controller) {
-      List<Patient> items = controller.patients;
+      List<Patient> items = controller.patientsList;
       return RefreshIndicator(
           onRefresh: controller.getPatient,
           child: ListView.builder(

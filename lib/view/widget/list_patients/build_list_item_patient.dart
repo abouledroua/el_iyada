@@ -33,7 +33,7 @@ class BuildListItemListPatient extends StatelessWidget {
           contentPadding: EdgeInsets.symmetric(horizontal: 8),
           onTap: () {
             ListPatientsController controller = Get.find();
-            int i = controller.patients.indexOf(item);
+            int i = controller.patientsList.indexOf(item);
             print("item:${item.name}, index =$i");
             // hide keyboard on start
             SystemChannels.textInput.invokeMethod('TextInput.hide');

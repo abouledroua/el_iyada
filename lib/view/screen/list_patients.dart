@@ -17,16 +17,13 @@ class ListPatients extends StatelessWidget {
         title: "Liste des Patients",
         child: GestureDetector(
             onTap: () {
-              FocusScopeNode currentFocus = FocusScope.of(context);
-              if (!currentFocus.hasPrimaryFocus) {
-                currentFocus.unfocus();
-              }
+              FocusScope.of(context).unfocus();
             },
             child: GetBuilder<ListPatientsController>(
                 builder: (controller) => Visibility(
                     visible: controller.loading,
                     replacement: Visibility(
-                        visible: controller.patients.isEmpty,
+                        visible: controller.patientsList.isEmpty,
                         replacement: const ListViewPatients(),
                         child: const EmptyListPatient()),
                     child: const LoadingWidget()))));

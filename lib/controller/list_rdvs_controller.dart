@@ -60,12 +60,9 @@ class ListRDVsController extends GetxController {
       var url = "$serverDir/GET_RDVS_TODAY.php";
       print("url=$url");
       rdvs.clear();
-      DateTime currentDate = DateTime.now();
-      String today =
-          "${currentDate.year}${currentDate.month}${currentDate.day}";
       Uri myUri = Uri.parse(url);
       http
-          .post(myUri, body: {"DATE_TODAY": today})
+          .post(myUri, body: {})
           .timeout(Duration(seconds: AppData.timeOut))
           .then((response) async {
             if (response.statusCode == 200) {

@@ -9,29 +9,33 @@ import '../core/constant/color.dart';
 import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
 import 'dart:async';
-
 import '../view/screen/list_patients.dart';
 
 class ListPatientsController extends GetxController {
-  bool loading = false, error = false;
+  bool loading = false, error = false, filter = false;
   String query = "";
   int nbPatient = 0;
-  List<Patient> patients = [];
+  List<Patient> allPatients = [], patientsList = [];
   late TextEditingController txtName;
 
-  updateBooleans({required newloading, required newerror}) {
+  updateLoading({required newloading, required newerror}) {
     loading = newloading;
     error = newerror;
     update();
   }
 
+  updateFilter({required bool newValue}) {
+    filter = newValue;
+    update();
+  }
+
   Future getPatient() async {
-    updateBooleans(newloading: true, newerror: false);
+    updateLoading(newloading: true, newerror: false);
     nbPatient = 0;
     String serverDir = AppData.getServerDirectory();
     var url = "$serverDir/GET_PATIENTS.php";
     print("url=$url");
-    patients.clear();
+    allPatients.clear();
     Uri myUri = Uri.parse(url);
     http
         .post(myUri, body: {})
@@ -64,14 +68,14 @@ class ListPatientsController extends GetxController {
                   isHomme: (sexe == 1),
                   sexe: sexe,
                   typeAge: int.parse(m['TYPE']));
-              patients.add(patient);
+              allPatients.add(patient);
               nbPatient++;
             }
-            updateBooleans(newloading: false, newerror: false);
+            updateLoading(newloading: false, newerror: false);
           } else {
-            patients.clear();
+            allPatients.clear();
             nbPatient = 0;
-            updateBooleans(newloading: false, newerror: true);
+            updateLoading(newloading: false, newerror: true);
             AppData.mySnackBar(
                 title: 'Liste des Patients',
                 message: "Probleme de Connexion avec le serveur !!!",
@@ -81,9 +85,9 @@ class ListPatientsController extends GetxController {
         })
         .catchError((error) {
           print("erreur : $error");
-          patients.clear();
+          allPatients.clear();
           nbPatient = 0;
-          updateBooleans(newloading: false, newerror: true);
+          updateLoading(newloading: false, newerror: true);
           AppData.mySnackBar(
               title: 'Liste des Patients',
               message: "Probleme de Connexion avec le serveur !!!",
@@ -114,8 +118,16 @@ class ListPatientsController extends GetxController {
 
   search() {
     if (txtName.text.isNotEmpty) {
+      updateFilter(newValue: true);
       query = txtName.text;
+      patientsList.clear();
+      allPatients.forEach((item) {
+        if (item.name.toUpperCase().contains(query.toUpperCase())) {
+          patientsList.add(item);
+        }
+      });
       Get.to(() => ListPatients());
+      updateFilter(newValue: false);
     }
   }
 }
