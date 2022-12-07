@@ -53,9 +53,6 @@ class ListRDVsController extends GetxController {
       int vnbconsult = 0;
       int vnbTotal = 0;
       int vnbRdvs = 0;
-      // nbconsult = 0;
-      //  nbRdvs = 0;
-      //  nbTotal = 0;
       String serverDir = AppData.getServerDirectory();
       var url = "$serverDir/GET_RDVS_TODAY.php";
       print("url=$url");
@@ -102,9 +99,6 @@ class ListRDVsController extends GetxController {
               updateBooleans(newloading: false, newerror: false);
             } else {
               rdvs.clear();
-              //    nbconsult = 0;
-              //    nbTotal = 0;
-              //    nbRdvs = 0;
               updateBooleans(newloading: false, newerror: true);
               AppData.mySnackBar(
                   title: 'Liste des Rendez-vous',
@@ -116,9 +110,6 @@ class ListRDVsController extends GetxController {
           .catchError((error) {
             print("erreur : $error");
             rdvs.clear();
-            //    nbconsult = 0;
-            //  nbTotal = 0;
-            //  nbRdvs = 0;
             updateBooleans(newloading: false, newerror: true);
             AppData.mySnackBar(
                 title: 'Liste des Rendez-vous',
@@ -137,7 +128,6 @@ class ListRDVsController extends GetxController {
   void onInit() {
     WidgetsFlutterBinding.ensureInitialized();
     AppSizes.setSizeScreen(Get.context);
-    Timer.periodic(Duration(seconds: 20), (timer) => getListRdvToday());
     getListRdvToday();
     super.onInit();
   }

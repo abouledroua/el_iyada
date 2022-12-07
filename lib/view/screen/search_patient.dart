@@ -5,6 +5,7 @@ import '../../controller/list_patients_controller.dart';
 import '../../core/constant/color.dart';
 import '../widget/homepage/statistics.dart';
 import '../widget/mywidget.dart';
+import 'list_patients.dart';
 import 'qrcodescanner.dart';
 
 class SearchPatient extends StatelessWidget {
@@ -38,8 +39,10 @@ class SearchPatient extends StatelessWidget {
                                 //     autofocus: true,
                                 keyboardType: TextInputType.name,
                                 textInputAction: TextInputAction.search,
-                                onFieldSubmitted: (value) =>
-                                    controller.search(),
+                                onFieldSubmitted: (value) {
+                                  controller.search();
+                                  Get.to(() => ListPatients());
+                                },
                                 decoration: InputDecoration(
                                     hintText: 'Nom du patient',
                                     hintStyle: const TextStyle(fontSize: 14),
@@ -63,6 +66,7 @@ class SearchPatient extends StatelessWidget {
                                           IconButton(
                                               onPressed: () {
                                                 controller.search();
+                                                Get.to(() => ListPatients());
                                               },
                                               icon: Icon(Icons.search))
                                         ]),

@@ -9,7 +9,6 @@ import '../core/constant/color.dart';
 import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
 import 'dart:async';
-import '../view/screen/list_patients.dart';
 
 class ListPatientsController extends GetxController {
   bool loading = false, error = false, filter = false;
@@ -35,7 +34,6 @@ class ListPatientsController extends GetxController {
     String serverDir = AppData.getServerDirectory();
     var url = "$serverDir/GET_PATIENTS.php";
     print("url=$url");
-    allPatients.clear();
     Uri myUri = Uri.parse(url);
     http
         .post(myUri, body: {})
@@ -46,6 +44,8 @@ class ListPatientsController extends GetxController {
             late int sexe;
             late String age, typeAge;
             var responsebody = jsonDecode(response.body);
+            allPatients.clear();
+
             for (var m in responsebody) {
               sexe = int.parse(m['SEXE']);
               age = m['AGE'];
@@ -71,6 +71,7 @@ class ListPatientsController extends GetxController {
               allPatients.add(patient);
               nbPatient++;
             }
+            search();
             updateLoading(newloading: false, newerror: false);
           } else {
             allPatients.clear();
@@ -126,8 +127,13 @@ class ListPatientsController extends GetxController {
           patientsList.add(item);
         }
       });
-      Get.to(() => ListPatients());
       updateFilter(newValue: false);
+    }
+  }
+
+  searchPatientByCb({required String cb}) {
+    for (var item in allPatients) {
+      if (item.cb == cb) return item;
     }
   }
 }

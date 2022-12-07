@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../controller/list_rdvs_controller.dart';
 import '../../../core/class/rdv.dart';
 import '../../../core/constant/color.dart';
+import '../../screen/acceuil_patient.dart';
 
 class BuildListItemListRDV extends StatelessWidget {
   final RDV item;
@@ -29,10 +30,8 @@ class BuildListItemListRDV extends StatelessWidget {
             Text("${item.ageS}",
                 style:
                     const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-            Visibility(
-                visible: item.motif.isNotEmpty,
-                child: Text("  --  ${item.motif}",
-                    style: const TextStyle(fontSize: 11)))
+            if (item.motif.isNotEmpty)
+              Text("  --  ${item.motif}", style: const TextStyle(fontSize: 11))
           ]),
           contentPadding: EdgeInsets.symmetric(horizontal: 8),
           onTap: () {
@@ -41,10 +40,7 @@ class BuildListItemListRDV extends StatelessWidget {
             print("item:${item.name}, index =$i");
             // hide keyboard on start
             SystemChannels.textInput.invokeMethod('TextInput.hide');
-            //      Get.bottomSheet(BottomSheetWidgetListEnfant(ind: i),
-            //         isScrollControlled: true,
-            //        enterBottomSheetDuration: const Duration(milliseconds: 600),
-            //       exitBottomSheetDuration: const Duration(milliseconds: 600));
+            Get.to(() => AcceuilPatient(cb: item.cb));
           })
     ]);
   }

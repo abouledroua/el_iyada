@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -7,6 +8,8 @@ import 'package:get/get.dart';
 import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
 import '../view/screen/list_rdvs.dart';
+import 'list_patients_controller.dart';
+import 'list_rdvs_controller.dart';
 
 class WelcomeController extends GetxController {
   String msg = "";
@@ -37,6 +40,12 @@ class WelcomeController extends GetxController {
           if (response.statusCode == 200) {
             var responsebody = jsonDecode(response.body);
             if (responsebody == "1") {
+              ListRDVsController contr = Get.find();
+              Timer.periodic(
+                  Duration(seconds: 15), (timer) => contr.getListRdvToday());
+              ListPatientsController controller = Get.find();
+              Timer.periodic(
+                  Duration(seconds: 20), (timer) => controller.getPatient());
               Get.off(() => const ListRDVs());
             }
           } else {

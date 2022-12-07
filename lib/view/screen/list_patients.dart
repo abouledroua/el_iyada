@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../controller/list_patients_controller.dart';
 import '../widget/list_patients/empty_list_patient.dart';
 import '../widget/list_patients/list_view_patient.dart';
-import '../widget/loadingwidget.dart';
+import '../widget/loading_widget.dart';
 import '../widget/mywidget.dart';
 
 class ListPatients extends StatelessWidget {

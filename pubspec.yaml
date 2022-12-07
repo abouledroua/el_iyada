@@ -44,6 +44,7 @@ dependencies:
   azlistview: any
   qr_code_scanner: any
   flutter_keyboard_visibility: any
+  cached_network_image: any
 
 dev_dependencies:
   flutter_test:

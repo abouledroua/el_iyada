@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../controller/list_patients_controller.dart';
 import '../../../core/class/patient.dart';
 import '../../../core/constant/color.dart';
+import '../../screen/acceuil_patient.dart';
 
 class BuildListItemListPatient extends StatelessWidget {
   final Patient item;
@@ -25,22 +26,18 @@ class BuildListItemListPatient extends StatelessWidget {
             Text("${item.ageS}",
                 style:
                     const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-            Visibility(
-                visible: item.tel.isNotEmpty,
-                child: Text("  --  ${item.tel}",
-                    style: const TextStyle(fontSize: 11)))
+            if (item.tel.isNotEmpty)
+              Text("  --  ${item.tel}", style: const TextStyle(fontSize: 11))
           ]),
           contentPadding: EdgeInsets.symmetric(horizontal: 8),
           onTap: () {
             ListPatientsController controller = Get.find();
             int i = controller.patientsList.indexOf(item);
-            print("item:${item.name}, index =$i");
+            print("item:${item.name}, index =$i, cb:${item.cb}");
             // hide keyboard on start
             SystemChannels.textInput.invokeMethod('TextInput.hide');
-            //      Get.bottomSheet(BottomSheetWidgetListEnfant(ind: i),
-            //         isScrollControlled: true,
-            //        enterBottomSheetDuration: const Duration(milliseconds: 600),
-            //       exitBottomSheetDuration: const Duration(milliseconds: 600));
+
+            Get.to(() => AcceuilPatient(cb: item.cb));
           })
     ]);
   }
