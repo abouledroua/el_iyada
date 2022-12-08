@@ -121,12 +121,12 @@ class AcceuilPatient extends StatelessWidget {
       Padding(
           padding: const EdgeInsets.only(left: 18.0),
           child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Text(libele, style: Theme.of(context).textTheme.headline1),
+            Text(libele, style: Theme.of(context).textTheme.headline2),
             FittedBox(
                 child: Text(data,
                     style: Theme.of(context)
                         .textTheme
-                        .headline2!
+                        .headline3!
                         .copyWith(fontWeight: FontWeight.normal)))
           ]));
 }
