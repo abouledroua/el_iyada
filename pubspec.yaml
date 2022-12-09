@@ -45,6 +45,8 @@ dependencies:
   qr_code_scanner: any
   flutter_keyboard_visibility: any
   cached_network_image: any
+  image_picker: any
+  photo_view: any
 
 dev_dependencies:
   flutter_test:

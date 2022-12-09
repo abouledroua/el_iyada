@@ -21,7 +21,7 @@ class PageDocsImages extends StatelessWidget {
           IconButton(
               onPressed: () {
                 PageDocsImagesController contr = Get.find();
-                contr.getImages();
+                contr.addImage();
               },
               icon: Icon(Icons.add)),
           IconButton(

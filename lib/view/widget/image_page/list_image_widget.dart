@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
+import 'package:el_iyada/core/constant/color.dart';
 import 'package:el_iyada/core/constant/sizes.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../controller/page_docs_images_controller.dart';
 import '../../../core/class/image.dart';
@@ -14,31 +14,13 @@ class ListImagesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PageDocsImagesController>(builder: (controller) {
-      List<MyImage> listImage = [];
-      List<Uint8List> listData = [];
-      List<bool> listLoading = [];
-      switch (type) {
-        case 1:
-          listImage = controller.echo;
-          listLoading = controller.echoLoading;
-          listData = controller.echoData;
-          break;
-        case 2:
-          listImage = controller.ecg;
-          listLoading = controller.ecgLoading;
-          listData = controller.ecgData;
-          break;
-        case 3:
-          listImage = controller.docs;
-          listLoading = controller.docsLoading;
-          listData = controller.docsData;
-          break;
-        case 4:
-          listImage = controller.radio;
-          listLoading = controller.radioLoading;
-          listData = controller.radioData;
-          break;
-      }
+      List<MyImage> listImage = (type == 1)
+          ? controller.echo
+          : (type == 2)
+              ? controller.ecg
+              : (type == 3)
+                  ? controller.docs
+                  : controller.radio;
       return RefreshIndicator(
           onRefresh: controller.getImages,
           child: ListView(children: [
@@ -50,9 +32,6 @@ class ListImagesWidget extends StatelessWidget {
                       double width =
                           (AppSizes.widthScreen - (espace * nbImage * 2)) /
                               nbImage;
-                      int index = listImage.indexOf(item);
-                      Uint8List imgData = listData[index];
-                      bool loadingData = listLoading[index];
                       return GestureDetector(
                           onTap: () {},
                           child: Padding(
@@ -60,6 +39,9 @@ class ListImagesWidget extends StatelessWidget {
                               child: Container(
                                   padding: const EdgeInsets.all(2.0),
                                   decoration: BoxDecoration(
+                                      color: item.etat == 1
+                                          ? AppColor.grey
+                                          : AppColor.white,
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
                                           color: Color.fromARGB(
@@ -67,13 +49,27 @@ class ListImagesWidget extends StatelessWidget {
                                   height: AppSizes.heightScreen / 3,
                                   width: width,
                                   child: Visibility(
-                                      visible: loadingData,
+                                      visible: item.loading,
                                       child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Center(
                                               child: CircularProgressIndicator
                                                   .adaptive())),
-                                      replacement: Image.memory(imgData)))));
+                                      replacement: Stack(children: [
+                                        Center(child: Image.memory(item.data)),
+                                        if (item.etat == 1)
+                                          Positioned(
+                                              top: -3,
+                                              right: -3,
+                                              child: Container(
+                                                  padding:
+                                                      const EdgeInsets.all(4),
+                                                  width: width / 9,
+                                                  height: width / 9,
+                                                  child:
+                                                      CircularProgressIndicator
+                                                          .adaptive()))
+                                      ])))));
                     })
                     .toList()
                     .cast<Widget>())

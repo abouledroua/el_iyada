@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'core/class/gest_photos.dart';
 import 'core/services/settingservice.dart';
 import 'view/screen/welcome.dart';
 
@@ -12,6 +13,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   await initialService();
+  GestImages.uploadImages();
   runApp(const MyApp());
 }
 
