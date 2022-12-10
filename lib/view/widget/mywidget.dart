@@ -9,13 +9,14 @@ class MyWidget extends StatelessWidget {
   final Widget? floatingActionButton;
   String? title;
   final List<Widget>? actions;
-  Color? color;
+  Color? color, titleColor;
   Widget? drawer, leading;
 
   MyWidget({
     Key? key,
     required this.child,
     this.color,
+    this.titleColor,
     this.title,
     this.drawer,
     this.actions,
@@ -46,7 +47,11 @@ class MyWidget extends StatelessWidget {
                             : null),
                     title: FittedBox(
                         child: Text(title!,
-                            style: Theme.of(context).textTheme.headline1))),
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1!
+                                .copyWith(
+                                    color: titleColor ?? AppColor.black)))),
             floatingActionButton: floatingActionButton,
             drawer: drawer,
             resizeToAvoidBottomInset: true,

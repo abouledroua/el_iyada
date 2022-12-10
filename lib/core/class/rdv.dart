@@ -1,6 +1,4 @@
-import 'package:azlistview/azlistview.dart';
-
-class RDV extends ISuspensionBean {
+class RDV {
   String name, cb, motif, ageS, heure_arrivee;
   int age, typeAge, etat, numReq, sexe;
   RDV(
@@ -14,7 +12,4 @@ class RDV extends ISuspensionBean {
       required this.name,
       required this.numReq,
       required this.motif});
-
-  @override
-  String getSuspensionTag() => name[0].toUpperCase();
 }

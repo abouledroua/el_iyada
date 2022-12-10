@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
 import '../core/class/gest_photos.dart';
-import '../core/class/image.dart';
+import '../core/class/my_image.dart';
 import '../core/class/image_upload.dart';
 import '../core/constant/color.dart';
 import '../core/constant/data.dart';
@@ -54,7 +54,8 @@ class PageDocsImagesController extends GetxController {
               for (var m in responsebody) {
                 type = int.parse(m['TYPE']);
                 img = MyImage(
-                    etat: 0,
+                    error: false,
+                    add: false,
                     data: base64Decode(''),
                     loading: true,
                     type: int.parse(m['TYPE']),
@@ -89,7 +90,7 @@ class PageDocsImagesController extends GetxController {
             } else {
               updateBooleans(newloading: false, newerror: true);
               AppData.mySnackBar(
-                  title: 'Liste des Imgaes',
+                  title: 'Liste des Images',
                   message: "Probleme de Connexion avec le serveur !!!",
                   color: AppColor.red);
               print('Probleme de Connexion avec le serveur !!!');
@@ -99,7 +100,7 @@ class PageDocsImagesController extends GetxController {
             print("erreur : $error");
             updateBooleans(newloading: false, newerror: true);
             AppData.mySnackBar(
-                title: 'Liste des Imgaes',
+                title: 'Liste des Images',
                 message: "Probleme de Connexion avec le serveur !!!",
                 color: AppColor.red);
           });
@@ -120,46 +121,68 @@ class PageDocsImagesController extends GetxController {
           if (response.statusCode == 200) {
             String img64 = jsonDecode(response.body);
             Uint8List decodedBytes = base64Decode(img64);
-            switch (type) {
-              case 1:
-                print('maj echoData .....');
-                echo[index].data = decodedBytes;
-                echo[index].loading = false;
-                break;
-              case 2:
-                print('maj ecgData .....');
-                ecg[index].data = decodedBytes;
-                ecg[index].loading = false;
-                break;
-              case 3:
-                print('maj docsData .....');
-                docs[index].data = decodedBytes;
-                docs[index].loading = false;
-                break;
-              case 4:
-                print('maj radioData .....');
-                radio[index].data = decodedBytes;
-                radio[index].loading = false;
-                break;
-            }
+            updateData(
+                index: index,
+                type: type,
+                decodedBytes: decodedBytes,
+                error: false);
             update();
           } else {
+            updateData(
+                index: index,
+                type: type,
+                decodedBytes: base64Decode(''),
+                error: true);
             updateBooleans(newloading: false, newerror: true);
-            AppData.mySnackBar(
-                title: 'Liste des Imgaes',
-                message: "Probleme de Connexion avec le serveur !!!",
-                color: AppColor.red);
+            //     AppData.mySnackBar(
+            //        title: 'Liste des Images',
+            //        message: "Probleme de Connexion avec le serveur 2 !!!",
+            //        color: AppColor.red);
             print('Probleme de Connexion avec le serveur !!!');
           }
         })
         .catchError((error) {
           print("erreur : $error");
+          updateData(
+              index: index,
+              type: type,
+              decodedBytes: base64Decode(''),
+              error: true);
           updateBooleans(newloading: false, newerror: true);
-          AppData.mySnackBar(
-              title: 'Liste des Imgaes',
-              message: "Probleme de Connexion avec le serveur !!!",
-              color: AppColor.red);
+          //    AppData.mySnackBar(
+          //      title: 'Liste des Images',
+          //     message: "Probleme de Connexion avec le serveur 1 !!!",
+          //     color: AppColor.red);
         });
+  }
+
+  updateData(
+      {required int type,
+      required int index,
+      required Uint8List decodedBytes,
+      required bool error}) {
+    switch (type) {
+      case 1:
+        if (!error) echo[index].data = decodedBytes;
+        echo[index].loading = false;
+        echo[index].error = error;
+        break;
+      case 2:
+        if (!error) ecg[index].data = decodedBytes;
+        ecg[index].loading = false;
+        ecg[index].error = error;
+        break;
+      case 3:
+        if (!error) docs[index].data = decodedBytes;
+        docs[index].loading = false;
+        docs[index].error = error;
+        break;
+      case 4:
+        if (!error) radio[index].data = decodedBytes;
+        radio[index].loading = false;
+        radio[index].error = error;
+        break;
+    }
   }
 
   @override
@@ -184,9 +207,10 @@ class PageDocsImagesController extends GetxController {
           cb: cb, chemin: image.path, data: imageData, type: type);
       GestImages.myImages.add(upoadImage);
       MyImage myImage = MyImage(
+          error: false,
           data: imageData,
           loading: false,
-          etat: 1,
+          add: true,
           chemin: "",
           type: type,
           date_image: "",

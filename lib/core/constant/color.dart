@@ -38,6 +38,11 @@ class AppColor {
 
   static const Color bleuFacebook = Color.fromARGB(255, 50, 64, 134);
 
+  static const Color infoSupp = Color.fromARGB(255, 50, 64, 134);
+  static const Color imagerie = AppColor.black;
+  static const Color ordonnance = AppColor.blue1;
+  static const Color bilans = Colors.pink;
+
   static const Color pink = Colors.pink;
 
   static List<Color> lightColor = [

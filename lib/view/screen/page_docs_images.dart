@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/keyboard_controller.dart';
-import '../../controller/list_patients_controller.dart';
 import '../../controller/page_docs_images_controller.dart';
-import '../../core/class/patient.dart';
 import '../../core/constant/color.dart';
+import '../widget/info_row.dart';
 import 'image_patient_view.dart';
 import '../widget/docs&images/menu_docs_images.dart';
 import '../widget/mywidget.dart';
@@ -17,27 +16,34 @@ class PageDocsImages extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(PageDocsImagesController(cb: cb));
     return MyWidget(
+        leading: IconButton(
+            onPressed: () {
+              Get.back();
+            },
+            icon: Icon(Icons.arrow_back, color: AppColor.white)),
         actions: [
           IconButton(
               onPressed: () {
                 PageDocsImagesController contr = Get.find();
                 contr.addImage();
               },
-              icon: Icon(Icons.add)),
+              icon: Icon(Icons.add, color: AppColor.white)),
           IconButton(
               onPressed: () {
                 PageDocsImagesController contr = Get.find();
                 contr.getImages();
               },
-              icon: Icon(Icons.refresh))
+              icon: Icon(Icons.refresh, color: AppColor.white))
         ],
-        title: "Documents & Imageries",
+        title: "Documents & Imageries Médical",
+        titleColor: AppColor.white,
+        color: AppColor.imagerie,
         child: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
             },
             child: Column(children: [
-              infoRow(context: context),
+              InfoRow(cb: cb),
               Divider(thickness: 1),
               Expanded(child: espaceTravail(context: context)),
               Divider(thickness: 1),
@@ -61,22 +67,4 @@ class PageDocsImages extends StatelessWidget {
                       visible: controller.page == 3,
                       child: ImagePatientView(cb: cb, type: 2),
                       replacement: ImagePatientView(cb: cb, type: 3)))));
-
-  infoRow({required BuildContext context}) => Container(
-      padding: EdgeInsets.symmetric(vertical: 4),
-      color: AppColor.yellowClaire,
-      child: GetBuilder<ListPatientsController>(builder: (controller) {
-        Patient patient = controller.searchPatientByCb(cb: cb);
-        return Padding(
-            padding: const EdgeInsets.only(left: 18.0),
-            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              Text('Nom : ', style: Theme.of(context).textTheme.headline2),
-              FittedBox(
-                  child: Text(patient.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline3!
-                          .copyWith(fontWeight: FontWeight.normal)))
-            ]));
-      }));
 }

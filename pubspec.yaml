@@ -31,22 +31,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: any
-  get: any
-  shared_preferences: any
-  progress_indicators: any
-  http: any
-  awesome_dialog: any
-  intl: any
-  url_launcher: any
-  flutter_launcher_icons: any
-  animated_text_kit: any
-  azlistview: any
-  qr_code_scanner: any
-  flutter_keyboard_visibility: any
-  cached_network_image: any
-  image_picker: any
-  photo_view: any
+  get: ^4.6.5
+  shared_preferences: ^2.0.15
+  http: ^0.13.5
+  awesome_dialog: ^3.0.2
+  intl: ^0.17.0
+  url_launcher: ^6.1.7
+  flutter_launcher_icons: ^0.11.0
+  qr_code_scanner: ^1.0.1
+  flutter_keyboard_visibility: ^5.4.0
+  image_picker: ^0.8.6
+  photo_view: ^0.14.0
 
 dev_dependencies:
   flutter_test:

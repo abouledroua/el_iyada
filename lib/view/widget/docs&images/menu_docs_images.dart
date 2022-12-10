@@ -9,20 +9,33 @@ class MenuDocsImages extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: AppSizes.heightScreen / 7,
-        padding: const EdgeInsets.all(8.0),
-        child: Row(children: [
-          SizedBox(width: 10),
-          myBtn(index: 1, text: 'Echographie', context: context),
-          SizedBox(width: 10),
-          myBtn(index: 2, text: 'Radiologie', context: context),
-          SizedBox(width: 10),
-          myBtn(index: 3, text: 'ECG', context: context),
-          SizedBox(width: 10),
-          myBtn(index: 4, text: 'Documents', context: context),
-          SizedBox(width: 10)
-        ]));
+    return GetBuilder<PageDocsImagesController>(
+        builder: (controller) => Container(
+            height: AppSizes.heightScreen / 7,
+            padding: const EdgeInsets.all(8.0),
+            child: Row(children: [
+              SizedBox(width: 10),
+              myBtn(
+                  index: 1,
+                  text: 'Echographie (${controller.echo.length})',
+                  context: context),
+              SizedBox(width: 10),
+              myBtn(
+                  index: 2,
+                  text: 'Radiologie (${controller.radio.length})',
+                  context: context),
+              SizedBox(width: 10),
+              myBtn(
+                  index: 3,
+                  text: 'ECG (${controller.ecg.length})',
+                  context: context),
+              SizedBox(width: 10),
+              myBtn(
+                  index: 4,
+                  text: 'Documents (${controller.docs.length})',
+                  context: context),
+              SizedBox(width: 10)
+            ])));
   }
 
   myBtn(
@@ -37,8 +50,8 @@ class MenuDocsImages extends StatelessWidget {
                 },
                 child: Ink(
                     color: controller.page == index
-                        ? AppColor.green2
-                        : AppColor.grey,
+                        ? AppColor.imagerie
+                        : AppColor.grey.withOpacity(0.6),
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 6),
                     child: FittedBox(
                         child: Text(text,

@@ -37,7 +37,7 @@ class BuildListItemListRDV extends StatelessWidget {
           onTap: () {
             ListRDVsController controller = Get.find();
             int i = controller.rdvs.indexOf(item);
-            print("item:${item.name}, index =$i");
+            print("item:${item.name}, index =$i , cb= ${item.cb},");
             // hide keyboard on start
             SystemChannels.textInput.invokeMethod('TextInput.hide');
             Get.to(() => AcceuilPatient(cb: item.cb));

@@ -6,6 +6,8 @@ import '../../core/class/patient.dart';
 import '../../core/constant/color.dart';
 import '../widget/mywidget.dart';
 import 'page_docs_images.dart';
+import 'page_list_bilan.dart';
+import 'page_list_ordonnance.dart';
 
 class AcceuilPatient extends StatelessWidget {
   final String cb;
@@ -47,8 +49,10 @@ class AcceuilPatient extends StatelessWidget {
             ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                     foregroundColor: AppColor.white,
-                    backgroundColor: AppColor.blue1),
-                onPressed: () {},
+                    backgroundColor: AppColor.ordonnance),
+                onPressed: () {
+                  Get.to(() => PageListOrdonnances(cb: cb));
+                },
                 icon: Icon(Icons.medical_information_outlined),
                 label: Text("Ordonnances")),
           if (patient.dateC.isNotEmpty)
@@ -56,7 +60,9 @@ class AcceuilPatient extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                     foregroundColor: AppColor.white,
                     backgroundColor: AppColor.pink),
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => PageListBilans(cb: cb));
+                },
                 icon: Icon(Icons.checklist_sharp),
                 label: Text("Bilans")),
           if (patient.dateC.isNotEmpty)
@@ -70,7 +76,7 @@ class AcceuilPatient extends StatelessWidget {
           ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                   foregroundColor: AppColor.white,
-                  backgroundColor: AppColor.vertPers),
+                  backgroundColor: AppColor.imagerie),
               onPressed: () {
                 Get.to(() => PageDocsImages(cb: cb));
               },
