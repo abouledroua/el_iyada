@@ -15,7 +15,6 @@ class GestImages {
   static const delayDuration = Duration(seconds: 4);
 
   static uploadImages() async {
-    print("start fetching for new images to upload ...");
     if (!_uploading && myImages.isNotEmpty) {
       print("     *******************  uploading image ****************");
       send(myImages[0]);
@@ -25,7 +24,6 @@ class GestImages {
           : "waiting for images ...");
     }
     Timer(delayDuration, uploadImages);
-    print("finish fetching for new images to upload ...");
   }
 
   static void send(MyImageUpload image) async {

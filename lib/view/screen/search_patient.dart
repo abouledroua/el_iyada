@@ -6,7 +6,6 @@ import '../../core/constant/color.dart';
 import '../widget/homepage/statistics.dart';
 import '../widget/mywidget.dart';
 import 'list_patients.dart';
-import 'qrcodescanner.dart';
 
 class SearchPatient extends StatelessWidget {
   const SearchPatient({Key? key}) : super(key: key);
@@ -81,31 +80,10 @@ class SearchPatient extends StatelessWidget {
                                 foregroundColor: AppColor.white,
                                 backgroundColor: AppColor.black),
                             onPressed: () async {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const QRViewExample()))
-                                  .then((data) async {
-                                if (data != null) {
-                                  print('cb = ' + data);
-                                  String cbNew = data;
-                                  cbNew = cbNew.substring(0, cbNew.length - 1);
-                                  print('cb = ' + cbNew);
-                                  ListPatientsController contr = Get.find();
-                                  int i, cbValue = int.parse(cbNew);
-                                  print('cb = $cbValue');
-                                  for (var item in contr.allPatients) {
-                                    i = int.parse(item.cb);
-                                    if (i == cbValue) {
-                                      print('i found it !!!!');
-                                      contr.updateQuery(item.name);
-                                      break;
-                                    }
-                                  }
-                                }
-                              });
+                              ListPatientsController contr = Get.find();
+                              contr.captuerCodeBarre(context);
                             },
-                            icon: Icon(Icons.bar_chart_rounded),
+                            icon: Icon(Icons.camera),
                             label: Text("Code Barre")),
                         Spacer()
                       ]))),

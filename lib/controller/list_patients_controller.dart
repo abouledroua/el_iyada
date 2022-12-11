@@ -10,6 +10,8 @@ import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
 import 'dart:async';
 
+import '../view/screen/qrcodescanner.dart';
+
 class ListPatientsController extends GetxController {
   bool loading = false, error = false, filter = false;
   String query = "";
@@ -45,32 +47,41 @@ class ListPatientsController extends GetxController {
             late String age, typeAge;
             var responsebody = jsonDecode(response.body);
             allPatients.clear();
-
+            int nbPatientSaute = 0;
             for (var m in responsebody) {
-              sexe = int.parse(m['SEXE']);
-              age = m['AGE'];
-              typeAge = m['TYPE'];
-              patient = Patient(
-                  name: m['NAME'],
-                  adresse: m['ADR'],
-                  gs: int.parse(m['GS']),
-                  tel: m['TEL'],
-                  ageS: age +
-                      ((typeAge == '1')
-                          ? ' an(s)'
-                          : (typeAge == 2)
-                              ? ' mois'
-                              : ' jours'),
-                  age: int.parse(m['AGE']),
-                  cb: m['CODE_BARRE'],
-                  dateC: m['DATE_CONSULT'],
-                  isFemme: (sexe == 2),
-                  isHomme: (sexe == 1),
-                  sexe: sexe,
-                  typeAge: int.parse(m['TYPE']));
-              allPatients.add(patient);
-              nbPatient++;
+              try {
+                sexe = int.parse(m['SEXE']);
+                age = m['AGE'];
+                typeAge = m['TYPE'];
+                patient = Patient(
+                    name: m['NAME'],
+                    adresse: m['ADR'],
+                    gs: int.parse(m['GS']),
+                    tel: m['TEL'],
+                    ageS: age +
+                        ((typeAge == '1')
+                            ? ' an(s)'
+                            : (typeAge == 2)
+                                ? ' mois'
+                                : ' jours'),
+                    age: int.parse(m['AGE']),
+                    cb: m['CODE_BARRE'],
+                    dateC: m['DATE_CONSULT'],
+                    isFemme: (sexe == 2),
+                    isHomme: (sexe == 1),
+                    sexe: sexe,
+                    typeAge: int.parse(m['TYPE']));
+                allPatients.add(patient);
+                nbPatient++;
+              } catch (e) {
+                print(
+                    'patient sauté because of : ${e.toString()} --- cb : ${m['CODE_BARRE']} , name : ${m['NAME']}, TEL : ${m['TEL']}, SEXE : ${m['SEXE']}, ADR : ${m['ADR']}, DATE_CONSULT : ${m['DATE_CONSULT']}, AGE : ${m['AGE']}, GS : ${m['GS']}, type : ${m['TYPE']}');
+                nbPatientSaute++;
+              }
             }
+            if (nbPatientSaute > 0)
+              print(
+                  ' ---- $nbPatientSaute sautés ----- $nbPatient ajoutés   ----');
             search();
             updateLoading(newloading: false, newerror: false);
           } else {
@@ -135,5 +146,28 @@ class ListPatientsController extends GetxController {
     for (var item in allPatients) {
       if (item.cb == cb) return item;
     }
+  }
+
+  void captuerCodeBarre(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const QRViewExample()))
+        .then((data) async {
+      if (data != null) {
+        print('data = ' + data);
+        String cbNew = data;
+        cbNew = cbNew.substring(0, cbNew.length - 1);
+        print('cbNew = ' + cbNew);
+        int i, cbValue = int.parse(cbNew);
+        print('cbValue = $cbValue');
+        for (var item in allPatients) {
+          i = int.parse(item.cb);
+          if (i == cbValue) {
+            print('i found it !!!!');
+            updateQuery(item.name);
+            break;
+          }
+        }
+      }
+    });
   }
 }

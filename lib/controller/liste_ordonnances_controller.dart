@@ -103,10 +103,12 @@ class ListOrdonnanceController extends GetxController {
               var responsebody = jsonDecode(response.body);
               listDetailsOrdonnance.clear();
               for (var m in responsebody) {
-                ord = DetailsOrdonnance(
-                    prescription: m['PRESC'],
-                    idMedic: int.parse(m['ID_MEDICAMENT']));
-                listDetailsOrdonnance.add(ord);
+                try {
+                  ord = DetailsOrdonnance(
+                      prescription: m['PRESC'],
+                      idMedic: int.parse(m['ID_MEDICAMENT']));
+                  listDetailsOrdonnance.add(ord);
+                } catch (e) {}
               }
               updateDetailsBooleans(newloading: false, newerror: false);
             } else {

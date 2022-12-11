@@ -65,34 +65,41 @@ class ListRDVsController extends GetxController {
             if (response.statusCode == 200) {
               late RDV rdv;
               late String age, typeAge;
+              int nbRdvSaute = 0;
               var responsebody = jsonDecode(response.body);
               for (var m in responsebody) {
-                age = m['AGE'];
-                typeAge = m['TYPE'];
-                rdv = RDV(
-                    typeAge: int.parse(m['TYPE']),
-                    heure_arrivee: m['H_ARRIV'],
-                    motif: m['MOTIFF'],
-                    name: m['NAME'],
-                    etat: int.parse(m['ETAT_RDV']),
-                    ageS: age +
-                        ((typeAge == '1')
-                            ? ' an(s)'
-                            : (typeAge == 2)
-                                ? ' mois'
-                                : ' jours'),
-                    sexe: int.parse(m['SEXE']),
-                    age: int.parse(m['AGE']),
-                    cb: m['CODE_BARRE'],
-                    numReq: int.parse(m['NUM_REQ']));
-                rdvs.add(rdv);
-                vnbTotal++;
-                if (rdv.numReq == 1) {
-                  vnbconsult++;
-                } else {
-                  vnbRdvs++;
+                try {
+                  age = m['AGE'];
+                  typeAge = m['TYPE'];
+                  rdv = RDV(
+                      typeAge: int.parse(m['TYPE']),
+                      heure_arrivee: m['H_ARRIV'],
+                      motif: m['MOTIFF'],
+                      name: m['NAME'],
+                      etat: int.parse(m['ETAT_RDV']),
+                      ageS: age +
+                          ((typeAge == '1')
+                              ? ' an(s)'
+                              : (typeAge == 2)
+                                  ? ' mois'
+                                  : ' jours'),
+                      sexe: int.parse(m['SEXE']),
+                      age: int.parse(m['AGE']),
+                      cb: m['CODE_BARRE'],
+                      numReq: int.parse(m['NUM_REQ']));
+                  rdvs.add(rdv);
+                  vnbTotal++;
+                  if (rdv.numReq == 1) {
+                    vnbconsult++;
+                  } else {
+                    vnbRdvs++;
+                  }
+                } catch (e) {
+                  print('patient sauté because of : ${e.toString()}');
+                  nbRdvSaute++;
                 }
               }
+              if (nbRdvSaute > 0) print(' ---- $nbRdvSaute sautés -----');
               nbconsult = vnbconsult;
               nbRdvs = vnbRdvs;
               nbTotal = vnbTotal;

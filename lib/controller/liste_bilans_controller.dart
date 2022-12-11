@@ -51,11 +51,13 @@ class ListBilanController extends GetxController {
               listDetailsBilan.clear();
               listConsult.clear();
               for (var m in responsebody) {
-                ord = Consultation(
-                    date_consult: m['DATE_CONSULTATION'],
-                    exercice: int.parse(m['EXERCICE']),
-                    idConsult: int.parse(m['ID_CONSULTATION']));
-                listConsult.add(ord);
+                try {
+                  ord = Consultation(
+                      date_consult: m['DATE_CONSULTATION'],
+                      exercice: int.parse(m['EXERCICE']),
+                      idConsult: int.parse(m['ID_CONSULTATION']));
+                  listConsult.add(ord);
+                } catch (e) {}
               }
               updateBooleans(newloading: false, newerror: false);
               if (listConsult.isNotEmpty) {
@@ -103,9 +105,12 @@ class ListBilanController extends GetxController {
               var responsebody = jsonDecode(response.body);
               listDetailsBilan.clear();
               for (var m in responsebody) {
-                ord = DetailsBilan(
-                    designation: m['BILAN'], idBilan: int.parse(m['ID_BILAN']));
-                listDetailsBilan.add(ord);
+                try {
+                  ord = DetailsBilan(
+                      designation: m['BILAN'],
+                      idBilan: int.parse(m['ID_BILAN']));
+                  listDetailsBilan.add(ord);
+                } catch (e) {}
               }
               updateDetailsBooleans(newloading: false, newerror: false);
             } else {

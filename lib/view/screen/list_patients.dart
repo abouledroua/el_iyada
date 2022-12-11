@@ -26,6 +26,6 @@ class ListPatients extends StatelessWidget {
                         visible: controller.patientsList.isEmpty,
                         replacement: const ListViewPatients(),
                         child: const EmptyListPatient()),
-                    child: const LoadingWidget()))));
+                    child: Center(child: const LoadingWidget())))));
   }
 }

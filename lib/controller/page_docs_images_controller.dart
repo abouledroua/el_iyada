@@ -52,39 +52,41 @@ class PageDocsImagesController extends GetxController {
               docs.clear();
 
               for (var m in responsebody) {
-                type = int.parse(m['TYPE']);
-                img = MyImage(
-                    error: false,
-                    add: false,
-                    data: base64Decode(''),
-                    loading: true,
-                    type: int.parse(m['TYPE']),
-                    chemin: m['CHEMIN'],
-                    date_image: m['DATE_IMAGE'],
-                    libelle: m['LIBELE'],
-                    id: int.parse(m['ID']));
-                switch (type) {
-                  case 1:
-                    echo.add(img);
-                    getImageData(
-                        chemin: img.chemin, index: echo.length - 1, type: 1);
-                    break;
-                  case 2:
-                    ecg.add(img);
-                    getImageData(
-                        chemin: img.chemin, index: ecg.length - 1, type: 2);
-                    break;
-                  case 3:
-                    docs.add(img);
-                    getImageData(
-                        chemin: img.chemin, index: docs.length - 1, type: 3);
-                    break;
-                  case 4:
-                    radio.add(img);
-                    getImageData(
-                        chemin: img.chemin, index: radio.length - 1, type: 4);
-                    break;
-                }
+                try {
+                  type = int.parse(m['TYPE']);
+                  img = MyImage(
+                      error: false,
+                      add: false,
+                      data: base64Decode(''),
+                      loading: true,
+                      type: int.parse(m['TYPE']),
+                      chemin: m['CHEMIN'],
+                      date_image: m['DATE_IMAGE'],
+                      libelle: m['LIBELE'],
+                      id: int.parse(m['ID']));
+                  switch (type) {
+                    case 1:
+                      echo.add(img);
+                      getImageData(
+                          chemin: img.chemin, index: echo.length - 1, type: 1);
+                      break;
+                    case 2:
+                      ecg.add(img);
+                      getImageData(
+                          chemin: img.chemin, index: ecg.length - 1, type: 2);
+                      break;
+                    case 3:
+                      docs.add(img);
+                      getImageData(
+                          chemin: img.chemin, index: docs.length - 1, type: 3);
+                      break;
+                    case 4:
+                      radio.add(img);
+                      getImageData(
+                          chemin: img.chemin, index: radio.length - 1, type: 4);
+                      break;
+                  }
+                } catch (e) {}
               }
               updateBooleans(newloading: false, newerror: false);
             } else {

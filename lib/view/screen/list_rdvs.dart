@@ -19,6 +19,12 @@ class ListRDVs extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
+                ListPatientsController contr = Get.find();
+                contr.captuerCodeBarre(context);
+              },
+              icon: Icon(Icons.camera)),
+          IconButton(
+              onPressed: () {
                 Get.to(() => SearchPatient());
               },
               icon: Icon(Icons.search)),

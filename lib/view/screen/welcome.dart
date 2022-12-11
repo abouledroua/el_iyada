@@ -9,8 +9,6 @@ import '../../core/constant/data.dart';
 import '../../core/constant/image_asset.dart';
 import '../../core/constant/sizes.dart';
 import '../../core/services/settingservice.dart';
-import '../../controller/list_patients_controller.dart';
-import '../../controller/list_rdvs_controller.dart';
 import '../widget/mywidget.dart';
 import 'qrcodescanner.dart';
 
@@ -21,8 +19,6 @@ class WelcomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Get.put(KeyboardController());
     Get.put(WelcomeController());
-    Get.put(ListPatientsController());
-    Get.put(ListRDVsController());
     return MyWidget(
         child: ListView(children: [
       SizedBox(height: 25),
@@ -56,7 +52,7 @@ class WelcomePage extends StatelessWidget {
                             child: TextFormField(
                                 controller: controller.txtServerIp,
                                 maxLines: 1,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 textInputAction: TextInputAction.next,
                                 decoration: InputDecoration(
                                     hintText: "Adresse du serveur",
@@ -80,6 +76,8 @@ class WelcomePage extends StatelessWidget {
                                             BorderRadius.circular(16))))),
                         SizedBox(width: 25),
                         ElevatedButton.icon(
+                            icon: Icon(Icons.qr_code),
+                            label: Text("QR Code"),
                             style: ElevatedButton.styleFrom(
                                 foregroundColor: AppColor.white,
                                 backgroundColor: AppColor.black),
@@ -98,15 +96,17 @@ class WelcomePage extends StatelessWidget {
                                   await controller.tryConnect();
                                 }
                               });
-                            },
-                            icon: Icon(Icons.qr_code),
-                            label: Text("QR Code")),
+                            }),
                         SizedBox(width: 25),
                         ElevatedButton.icon(
                             style: ElevatedButton.styleFrom(
                                 foregroundColor: AppColor.white,
                                 backgroundColor: AppColor.green2),
                             onPressed: () async {
+                              AppData.serverIP = controller.txtServerIp.text;
+                              SettingServices c = Get.find();
+                              c.sharedPrefs.setString(
+                                  'ServerAdress', controller.txtServerIp.text);
                               await controller.tryConnect();
                             },
                             icon: Icon(Icons.refresh),

@@ -40,12 +40,14 @@ class WelcomeController extends GetxController {
           if (response.statusCode == 200) {
             var responsebody = jsonDecode(response.body);
             if (responsebody == "1") {
-              ListRDVsController contr = Get.find();
+              print('------------------ Connected ---------------');
+              ListRDVsController rdvContr = Get.put(ListRDVsController());
               Timer.periodic(
-                  Duration(seconds: 15), (timer) => contr.getListRdvToday());
-              ListPatientsController controller = Get.find();
+                  Duration(seconds: 15), (timer) => rdvContr.getListRdvToday());
+              ListPatientsController patContr =
+                  Get.put(ListPatientsController());
               Timer.periodic(
-                  Duration(seconds: 20), (timer) => controller.getPatient());
+                  Duration(seconds: 15), (timer) => patContr.getPatient());
               Get.off(() => const ListRDVs());
             }
           } else {
