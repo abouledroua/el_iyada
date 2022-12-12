@@ -28,11 +28,10 @@ class ListOrdonnancesWidget extends StatelessWidget {
 
   listDetails(BuildContext context, ListOrdonnanceController controller) =>
       Column(children: [
-        Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: FittedBox(
-                child: Text('Préscription',
-                    style: Theme.of(context).textTheme.headline3))),
+        FittedBox(
+            child: Text(
+                'Préscription ${controller.listDetailsOrdonnance.isEmpty ? '' : '(${controller.listDetailsOrdonnance.length})'}',
+                style: Theme.of(context).textTheme.headline3)),
         Divider(),
         Expanded(
             child: Visibility(
@@ -40,14 +39,16 @@ class ListOrdonnancesWidget extends StatelessWidget {
                 replacement: Visibility(
                     visible: controller.listDetailsOrdonnance.isEmpty,
                     replacement: ListView.builder(
+                        padding: EdgeInsets.zero,
                         itemCount: controller.listDetailsOrdonnance.length,
-                        itemBuilder: (context, index) => ListTile(
-                            contentPadding: EdgeInsets.all(0),
-                            horizontalTitleGap: 0,
-                            minLeadingWidth: 0,
-                            title: Text(
+                        itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
                                 "${index + 1} - ${controller.listDetailsOrdonnance[index].prescription}",
-                                style: Theme.of(context).textTheme.bodyLarge))),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline3!
+                                    .copyWith(fontWeight: FontWeight.normal)))),
                     child: const EmptyListPrescription()),
                 child: const LoadingWidget()))
       ]);
@@ -70,20 +71,26 @@ class ListOrdonnancesWidget extends StatelessWidget {
                           controller.updateSelectionDate(index);
                         },
                         child: Ink(
-                            padding: EdgeInsets.all(8),
-                            color: controller.indexSelected == index
-                                ? AppColor.ordonnance
-                                : Colors.transparent,
-                            child: Center(
-                                child: Text(
-                                    controller.listConsult[index].date_consult,
-                                    style: controller.indexSelected == index
-                                        ? Theme.of(context)
-                                            .textTheme
-                                            .headline3!
-                                            .copyWith(color: AppColor.white)
-                                        : Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge))))))
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    color: controller.indexSelected == index
+                                        ? AppColor.ordonnance
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(15),
+                                        bottomRight: Radius.circular(15))),
+                                padding: EdgeInsets.all(8),
+                                child: Center(
+                                    child: Text(
+                                        controller
+                                            .listConsult[index].date_consult,
+                                        style: controller.indexSelected == index
+                                            ? Theme.of(context)
+                                                .textTheme
+                                                .headline3!
+                                                .copyWith(color: AppColor.white)
+                                            : Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge)))))))
           ]));
 }

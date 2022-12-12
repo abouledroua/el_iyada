@@ -115,7 +115,7 @@ class ListOrdonnanceController extends GetxController {
                   listDetailsOrdonnance.add(ord);
                 } catch (e) {
                   print(
-                      'GET_DETAILS_ORDONNANCE sauté because of : ${e.toString()} ');
+                      'GET_DETAILS_ORDONNANCE sauté because of : ${e.toString()} , idMedic: ${m['ID_MEDICAMENT']}');
                 }
               }
               updateDetailsBooleans(newloading: false, newerror: false);

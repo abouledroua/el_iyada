@@ -31,7 +31,8 @@ class ListBilansWidget extends StatelessWidget {
         Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: FittedBox(
-                child: Text('Liste des Bilans',
+                child: Text(
+                    'Liste des Bilans ${controller.listDetailsBilan.isEmpty ? '' : '(${controller.listDetailsBilan.length})'}',
                     style: Theme.of(context).textTheme.headline3))),
         Divider(),
         Expanded(
@@ -41,13 +42,14 @@ class ListBilansWidget extends StatelessWidget {
                     visible: controller.listDetailsBilan.isEmpty,
                     replacement: ListView.builder(
                         itemCount: controller.listDetailsBilan.length,
-                        itemBuilder: (context, index) => ListTile(
-                            contentPadding: EdgeInsets.all(0),
-                            horizontalTitleGap: 0,
-                            minLeadingWidth: 0,
-                            title: Text(
+                        itemBuilder: (context, index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Text(
                                 "${index + 1} - ${controller.listDetailsBilan[index].designation}",
-                                style: Theme.of(context).textTheme.bodyLarge))),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline3!
+                                    .copyWith(fontWeight: FontWeight.normal)))),
                     child: const EmptyListDetailsBilan()),
                 child: const LoadingWidget()))
       ]);
@@ -69,20 +71,25 @@ class ListBilansWidget extends StatelessWidget {
                       controller.updateSelectionDate(index);
                     },
                     child: Ink(
-                        padding: EdgeInsets.all(8),
-                        color: controller.indexSelected == index
-                            ? AppColor.bilans
-                            : Colors.transparent,
-                        child: Center(
-                            child: Text(
-                                controller.listConsult[index].date_consult,
-                                style: controller.indexSelected == index
-                                    ? Theme.of(context)
-                                        .textTheme
-                                        .headline3!
-                                        .copyWith(color: AppColor.white)
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge))))))
+                        child: Container(
+                            decoration: BoxDecoration(
+                                color: controller.indexSelected == index
+                                    ? AppColor.bilans
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(15),
+                                    bottomRight: Radius.circular(15))),
+                            padding: EdgeInsets.all(8),
+                            child: Center(
+                                child: Text(
+                                    controller.listConsult[index].date_consult,
+                                    style: controller.indexSelected == index
+                                        ? Theme.of(context)
+                                            .textTheme
+                                            .headline3!
+                                            .copyWith(color: AppColor.white)
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge)))))))
       ]));
 }

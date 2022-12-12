@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -9,6 +10,7 @@ import '../core/class/patient.dart';
 import '../core/constant/color.dart';
 import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
+import '../view/screen/acceuil_patient.dart';
 import '../view/screen/qrcodescanner.dart';
 
 class ListPatientsController extends GetxController {
@@ -33,7 +35,6 @@ class ListPatientsController extends GetxController {
   }
 
   Future getPatient() async {
-    print('widgetListPatientOpen = $widgetListPatientOpen');
     if (!widgetListPatientOpen) {
       updateLoading(newloading: true, newerror: false);
       nbPatient = 0;
@@ -175,10 +176,19 @@ class ListPatientsController extends GetxController {
           if (i == cbValue) {
             print('i found it !!!!');
             updateQuery(item.name);
+            openAcceuilPatient(item);
             break;
           }
         }
       }
     });
+  }
+
+  void openAcceuilPatient(Patient item) {
+    int i = patientsList.indexOf(item);
+    print("item:${item.name}, index =$i, cb:${item.cb}");
+    // hide keyboard on start
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    Get.to(() => AcceuilPatient(cb: item.cb));
   }
 }

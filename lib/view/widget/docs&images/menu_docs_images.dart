@@ -54,16 +54,18 @@ class MenuDocsImages extends StatelessWidget {
                         : AppColor.grey.withOpacity(0.6),
                     padding: EdgeInsets.symmetric(vertical: 8, horizontal: 6),
                     child: FittedBox(
-                        child: Text(text,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1!
-                                .copyWith(
-                                    fontWeight: controller.page == index
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                                    color: controller.page == index
-                                        ? AppColor.white
-                                        : AppColor.greyblack)))))));
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 3),
+                            child: Text(text,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1!
+                                    .copyWith(
+                                        fontWeight: controller.page == index
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                        color: controller.page == index
+                                            ? AppColor.white
+                                            : AppColor.greyblack))))))));
   }
 }
