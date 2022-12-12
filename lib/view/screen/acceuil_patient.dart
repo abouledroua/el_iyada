@@ -65,14 +65,14 @@ class AcceuilPatient extends StatelessWidget {
                 },
                 icon: Icon(Icons.checklist_sharp),
                 label: Text("Bilans")),
-          if (patient.dateC.isNotEmpty)
-            ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                    foregroundColor: AppColor.white,
-                    backgroundColor: AppColor.bleuFacebook),
-                onPressed: () {},
-                icon: Icon(Icons.perm_device_information_outlined),
-                label: Text("Infos Supplémentaires")),
+          //       if (patient.dateC.isNotEmpty)
+          //        ElevatedButton.icon(
+          //           style: ElevatedButton.styleFrom(
+          //               foregroundColor: AppColor.white,
+          //               backgroundColor: AppColor.bleuFacebook),
+          //           onPressed: () {},
+          //           icon: Icon(Icons.perm_device_information_outlined),
+          //           label: Text("Infos Supplémentaires")),
           ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                   foregroundColor: AppColor.white,

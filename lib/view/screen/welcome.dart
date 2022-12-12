@@ -35,8 +35,8 @@ class WelcomePage extends StatelessWidget {
                       : controller.msg,
                   style: Theme.of(context).textTheme.headline2!.copyWith(
                       color: controller.serverError
-                          ? Colors.red
-                          : Colors.black)))),
+                          ? AppColor.red
+                          : AppColor.black)))),
       SizedBox(height: 25),
       GetBuilder<WelcomeController>(
           builder: (controller) => Visibility(

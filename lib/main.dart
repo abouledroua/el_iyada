@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'core/class/gest_photos.dart';
+import 'core/constant/color.dart';
 import 'core/services/settingservice.dart';
 import 'view/screen/welcome.dart';
 
@@ -32,29 +33,29 @@ class MyApp extends StatelessWidget {
         title: 'EL IYADA',
         home: const WelcomePage(),
         theme: ThemeData(
-            primaryColor: Colors.blue,
+            primaryColor: AppColor.blue1,
             textTheme: const TextTheme(
                 headline1: TextStyle(
-                    color: Colors.black,
+                    color: AppColor.black,
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
                     fontFamily: "Traditional"),
                 headline2: TextStyle(
-                    color: Colors.black,
+                    color: AppColor.black,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     fontFamily: "Traditional"),
                 headline3: TextStyle(
-                    color: Colors.black,
+                    color: AppColor.black,
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
                     fontFamily: "Traditional"),
                 bodyText1: TextStyle(
-                    color: Colors.black,
+                    color: AppColor.black,
                     fontSize: 14,
                     fontFamily: "Traditional"),
                 bodyText2: TextStyle(
-                    color: Colors.black,
+                    color: AppColor.black,
                     fontSize: 11,
                     fontFamily: "Traditional"),
                 button: TextStyle(

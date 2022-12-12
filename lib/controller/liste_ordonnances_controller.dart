@@ -51,11 +51,16 @@ class ListOrdonnanceController extends GetxController {
               listDetailsOrdonnance.clear();
               listConsult.clear();
               for (var m in responsebody) {
-                ord = Consultation(
-                    date_consult: m['DATE_ORDONNANCE'],
-                    exercice: int.parse(m['EXERCICE']),
-                    idConsult: int.parse(m['ID_CONSULTATION']));
-                listConsult.add(ord);
+                try {
+                  ord = Consultation(
+                      date_consult: m['DATE_ORDONNANCE'],
+                      exercice: int.parse(m['EXERCICE']),
+                      idConsult: int.parse(m['ID_CONSULTATION']));
+                  listConsult.add(ord);
+                } catch (e) {
+                  print(
+                      'GET_LIST_ORDONNANCES sauté because of : ${e.toString()} ');
+                }
               }
               updateBooleans(newloading: false, newerror: false);
               if (listConsult.isNotEmpty) {
@@ -108,7 +113,10 @@ class ListOrdonnanceController extends GetxController {
                       prescription: m['PRESC'],
                       idMedic: int.parse(m['ID_MEDICAMENT']));
                   listDetailsOrdonnance.add(ord);
-                } catch (e) {}
+                } catch (e) {
+                  print(
+                      'GET_DETAILS_ORDONNANCE sauté because of : ${e.toString()} ');
+                }
               }
               updateDetailsBooleans(newloading: false, newerror: false);
             } else {

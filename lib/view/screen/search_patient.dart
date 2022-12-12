@@ -39,8 +39,10 @@ class SearchPatient extends StatelessWidget {
                                 keyboardType: TextInputType.name,
                                 textInputAction: TextInputAction.search,
                                 onFieldSubmitted: (value) {
-                                  controller.search();
-                                  Get.to(() => ListPatients());
+                                  if (value.isNotEmpty) {
+                                    controller.search();
+                                    Get.to(() => ListPatients());
+                                  }
                                 },
                                 decoration: InputDecoration(
                                     hintText: 'Nom du patient',
@@ -64,8 +66,11 @@ class SearchPatient extends StatelessWidget {
                                                   color: AppColor.red)),
                                           IconButton(
                                               onPressed: () {
-                                                controller.search();
-                                                Get.to(() => ListPatients());
+                                                if (controller
+                                                    .txtName.text.isNotEmpty) {
+                                                  controller.search();
+                                                  Get.to(() => ListPatients());
+                                                }
                                               },
                                               icon: Icon(Icons.search))
                                         ]),

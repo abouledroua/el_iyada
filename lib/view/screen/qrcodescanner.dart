@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../core/constant/color.dart';
+
 class QRViewExample extends StatefulWidget {
   const QRViewExample({Key? key}) : super(key: key);
 
@@ -111,7 +113,7 @@ class _QRViewExampleState extends State<QRViewExample> {
         key: qrKey,
         onQRViewCreated: _onQRViewCreated,
         overlay: QrScannerOverlayShape(
-            borderColor: Colors.red,
+            borderColor: AppColor.red,
             borderRadius: 10,
             borderLength: 30,
             borderWidth: 10,

@@ -86,7 +86,9 @@ class PageDocsImagesController extends GetxController {
                           chemin: img.chemin, index: radio.length - 1, type: 4);
                       break;
                   }
-                } catch (e) {}
+                } catch (e) {
+                  print('GET_IMAGES sauté because of : ${e.toString()} ');
+                }
               }
               updateBooleans(newloading: false, newerror: false);
             } else {

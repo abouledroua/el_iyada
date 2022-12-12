@@ -12,20 +12,43 @@ class ListPatients extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MyWidget(
-        //   drawer: AppData.myDrawer(context),
-        //  actions: controller.myActions(),
-        title: "Liste des Patients",
-        child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
+        leading: IconButton(
+            onPressed: () {
+              ListPatientsController contr = Get.find();
+              contr.onWillPop();
+              Get.back();
             },
-            child: GetBuilder<ListPatientsController>(
-                builder: (controller) => Visibility(
-                    visible: controller.loading,
-                    replacement: Visibility(
-                        visible: controller.patientsList.isEmpty,
-                        replacement: const ListViewPatients(),
-                        child: const EmptyListPatient()),
-                    child: Center(child: const LoadingWidget())))));
+            icon: Icon(Icons.arrow_back)),
+        actions: [
+          IconButton(
+              onPressed: () {
+                ListPatientsController contr = Get.find();
+                contr.captuerCodeBarre(context);
+              },
+              icon: Icon(Icons.camera)),
+          IconButton(
+              onPressed: () {
+                ListPatientsController contr = Get.find();
+                contr.widgetListPatientOpen = false;
+                contr.getPatient();
+                contr.widgetListPatientOpen = true;
+              },
+              icon: Icon(Icons.refresh))
+        ],
+        title: "Liste des Patients",
+        child: GestureDetector(onTap: () {
+          FocusScope.of(context).unfocus();
+        }, child: GetBuilder<ListPatientsController>(builder: (controller) {
+          controller.widgetListPatientOpen = true;
+          return WillPopScope(
+              onWillPop: controller.onWillPop,
+              child: Visibility(
+                  visible: controller.loading,
+                  replacement: Visibility(
+                      visible: controller.patientsList.isEmpty,
+                      replacement: const ListViewPatients(),
+                      child: const EmptyListPatient()),
+                  child: Center(child: const LoadingWidget())));
+        })));
   }
 }

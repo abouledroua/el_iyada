@@ -57,7 +57,9 @@ class ListBilanController extends GetxController {
                       exercice: int.parse(m['EXERCICE']),
                       idConsult: int.parse(m['ID_CONSULTATION']));
                   listConsult.add(ord);
-                } catch (e) {}
+                } catch (e) {
+                  print('GET_LIST_BILANS sauté because of : ${e.toString()} ');
+                }
               }
               updateBooleans(newloading: false, newerror: false);
               if (listConsult.isNotEmpty) {
@@ -110,7 +112,10 @@ class ListBilanController extends GetxController {
                       designation: m['BILAN'],
                       idBilan: int.parse(m['ID_BILAN']));
                   listDetailsBilan.add(ord);
-                } catch (e) {}
+                } catch (e) {
+                  print(
+                      'GET_DETAILS_BILAN sauté because of : ${e.toString()} ');
+                }
               }
               updateDetailsBooleans(newloading: false, newerror: false);
             } else {

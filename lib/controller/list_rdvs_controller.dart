@@ -95,7 +95,7 @@ class ListRDVsController extends GetxController {
                     vnbRdvs++;
                   }
                 } catch (e) {
-                  print('patient sauté because of : ${e.toString()}');
+                  print('GET_RDVS_TODAY sauté because of : ${e.toString()}');
                   nbRdvSaute++;
                 }
               }
