@@ -12,11 +12,14 @@ import '../core/constant/sizes.dart';
 
 class ListOrdonnanceController extends GetxController {
   late String cb;
-  int indexSelected = -1;
+  int indexSelected = -1, ab = 1;
   bool loading = false, error = false;
-  bool loadingDetails = false, errorDetails = false;
+  bool loadingDetailsA = false,
+      errorDetailsA = false,
+      loadingDetailsB = false,
+      errorDetailsB = false;
   List<Consultation> listConsult = [];
-  List<DetailsOrdonnance> listDetailsOrdonnance = [];
+  List<DetailsOrdonnance> listOrdA = [], listOrdB = [];
 
   ListOrdonnanceController({required String cb}) {
     this.cb = cb;
@@ -28,9 +31,21 @@ class ListOrdonnanceController extends GetxController {
     update();
   }
 
-  updateDetailsBooleans({required newloading, required newerror}) {
-    loadingDetails = newloading;
-    errorDetails = newerror;
+  updateDetailsBooleansA({required newloading, required newerror}) {
+    loadingDetailsA = newloading;
+    errorDetailsA = newerror;
+    update();
+  }
+
+  updateDetailsBooleansB({required newloading, required newerror}) {
+    loadingDetailsB = newloading;
+    errorDetailsB = newerror;
+    update();
+  }
+
+  updateAB({required int newIndex}) {
+    ab = newIndex;
+    print('ab = $ab');
     update();
   }
 
@@ -48,13 +63,15 @@ class ListOrdonnanceController extends GetxController {
             if (response.statusCode == 200) {
               late Consultation ord;
               var responsebody = jsonDecode(response.body);
-              listDetailsOrdonnance.clear();
+              listOrdA.clear();
+              listOrdB.clear();
               listConsult.clear();
               for (var m in responsebody) {
                 try {
                   ord = Consultation(
                       date_consult: m['DATE_ORDONNANCE'],
                       exercice: int.parse(m['EXERCICE']),
+                      typeConv: int.parse(m['TYPE_CONV']),
                       idConsult: int.parse(m['ID_CONSULTATION']));
                   listConsult.add(ord);
                 } catch (e) {
@@ -67,7 +84,7 @@ class ListOrdonnanceController extends GetxController {
                 if (indexSelected == -1)
                   updateSelectionDate(0);
                 else
-                  getDetailsOrdonnances();
+                  getDetails();
               }
             } else {
               updateBooleans(newloading: false, newerror: true);
@@ -89,15 +106,26 @@ class ListOrdonnanceController extends GetxController {
     }
   }
 
-  Future getDetailsOrdonnances() async {
-    if (!loadingDetails && indexSelected >= 0) {
-      updateDetailsBooleans(newloading: true, newerror: false);
+  Future getDetails() async {
+    if (listConsult[indexSelected].typeConv == 1) updateAB(newIndex: 1);
+    await getPrescriptions(type: 1);
+    await getPrescriptions(type: 2);
+  }
+
+  Future getPrescriptions({required int type}) async {
+    if (((!loadingDetailsA && type == 1) || (!loadingDetailsB && type == 2)) &&
+        indexSelected >= 0) {
+      if (type == 1)
+        updateDetailsBooleansA(newloading: true, newerror: false);
+      else
+        updateDetailsBooleansB(newloading: true, newerror: false);
       String serverDir = AppData.getServerDirectory();
       var url = "$serverDir/GET_DETAILS_ORDONNANCE.php";
       print("url=$url");
       Uri myUri = Uri.parse(url);
       http
           .post(myUri, body: {
+            "TYPE": type.toString(),
             "ID_CONSULTATION": listConsult[indexSelected].idConsult.toString(),
             "EXERCICE": listConsult[indexSelected].exercice.toString(),
           })
@@ -106,21 +134,34 @@ class ListOrdonnanceController extends GetxController {
             if (response.statusCode == 200) {
               late DetailsOrdonnance ord;
               var responsebody = jsonDecode(response.body);
-              listDetailsOrdonnance.clear();
+              if (type == 1)
+                listOrdA.clear();
+              else
+                listOrdB.clear();
               for (var m in responsebody) {
                 try {
                   ord = DetailsOrdonnance(
+                      type: type,
                       prescription: m['PRESC'],
                       idMedic: int.parse(m['ID_MEDICAMENT']));
-                  listDetailsOrdonnance.add(ord);
+                  if (type == 1)
+                    listOrdA.add(ord);
+                  else
+                    listOrdB.add(ord);
                 } catch (e) {
                   print(
-                      'GET_DETAILS_ORDONNANCE sauté because of : ${e.toString()} , idMedic: ${m['ID_MEDICAMENT']}');
+                      'GET_DETAILS_ORDONNANCE sauté because of : ${e.toString()} , idMedic: ${m['ID_MEDICAMENT']} ? prescription: ${m['PRESC']}');
                 }
               }
-              updateDetailsBooleans(newloading: false, newerror: false);
+              if (type == 1)
+                updateDetailsBooleansA(newloading: false, newerror: false);
+              else
+                updateDetailsBooleansB(newloading: false, newerror: false);
             } else {
-              updateDetailsBooleans(newloading: false, newerror: true);
+              if (type == 1)
+                updateDetailsBooleansA(newloading: false, newerror: true);
+              else
+                updateDetailsBooleansB(newloading: false, newerror: true);
               AppData.mySnackBar(
                   title: 'Liste des Ordonnances',
                   message: "Probleme de Connexion avec le serveur !!!",
@@ -130,7 +171,10 @@ class ListOrdonnanceController extends GetxController {
           })
           .catchError((error) {
             print("erreur : $error");
-            updateDetailsBooleans(newloading: false, newerror: true);
+            if (type == 1)
+              updateDetailsBooleansA(newloading: false, newerror: true);
+            else
+              updateDetailsBooleansB(newloading: false, newerror: true);
             AppData.mySnackBar(
                 title: 'Liste des Ordonnances',
                 message: "Probleme de Connexion avec le serveur !!!",
@@ -140,8 +184,9 @@ class ListOrdonnanceController extends GetxController {
   }
 
   updateSelectionDate(int newIndex) {
+    ab = 1;
     indexSelected = newIndex;
-    getDetailsOrdonnances();
+    getDetails();
   }
 
   @override
@@ -149,6 +194,7 @@ class ListOrdonnanceController extends GetxController {
     WidgetsFlutterBinding.ensureInitialized();
     AppSizes.setSizeScreen(Get.context);
     indexSelected = -1;
+    ab = 1;
     getOrdonnances();
     super.onInit();
   }

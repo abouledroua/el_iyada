@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../controller/keyboard_controller.dart';
 import '../../controller/list_patients_controller.dart';
 import '../../core/constant/color.dart';
+import '../../core/constant/sizes.dart';
 import '../widget/homepage/statistics.dart';
 import '../widget/mywidget.dart';
 import 'list_patients.dart';
@@ -12,6 +13,8 @@ class SearchPatient extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ListPatientsController controller = Get.find();
+    controller.updateQuery("");
     return MyWidget(
         title: "Rechercher un Patient",
         child: GestureDetector(
@@ -28,10 +31,9 @@ class SearchPatient extends StatelessWidget {
                         SizedBox(width: 20),
                         Text('Recherche en cours ...')
                       ]),
-                      replacement: Row(children: [
-                        Spacer(flex: 3),
-                        Expanded(
-                            flex: 8,
+                      replacement: Center(
+                        child: SizedBox(
+                            width: AppSizes.widthScreen / 2,
                             child: TextFormField(
                                 controller: controller.txtName,
                                 maxLines: 1,
@@ -79,19 +81,27 @@ class SearchPatient extends StatelessWidget {
                                             BorderSide(color: AppColor.black),
                                         borderRadius:
                                             BorderRadius.circular(16))))),
-                        Spacer(flex: 3),
-                        ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                                foregroundColor: AppColor.white,
-                                backgroundColor: AppColor.black),
-                            onPressed: () async {
-                              ListPatientsController contr = Get.find();
-                              contr.captuerCodeBarre(context);
-                            },
-                            icon: Icon(Icons.camera),
-                            label: Text("Code Barre")),
-                        Spacer()
-                      ]))),
+                      ))),
+              Spacer(),
+              GetBuilder<KeyboardController>(
+                  builder: (controller) => Visibility(
+                      visible: !controller.keyboadrShow,
+                      child: ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                              foregroundColor: AppColor.white,
+                              backgroundColor: AppColor.black),
+                          onPressed: () async {
+                            ListPatientsController contr = Get.find();
+                            contr.captuerCodeBarre(context);
+                          },
+                          icon: Icon(Icons.camera),
+                          label: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Capturer le code barre du patient",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline3!
+                                      .copyWith(color: AppColor.white)))))),
               Spacer(),
               GetBuilder<KeyboardController>(
                   builder: (controller) => Visibility(

@@ -1,5 +1,6 @@
 class DetailsOrdonnance {
   String prescription;
-  int idMedic;
-  DetailsOrdonnance({required this.prescription, required this.idMedic});
+  int idMedic, type;
+  DetailsOrdonnance(
+      {required this.prescription, required this.idMedic, required this.type});
 }

@@ -37,7 +37,6 @@ class ListPatientsController extends GetxController {
   Future getPatient() async {
     if (!widgetListPatientOpen) {
       updateLoading(newloading: true, newerror: false);
-      nbPatient = 0;
       String serverDir = AppData.getServerDirectory();
       var url = "$serverDir/GET_PATIENTS.php";
       print("url=$url");
@@ -52,6 +51,7 @@ class ListPatientsController extends GetxController {
               late String age, typeAge;
               var responsebody = jsonDecode(response.body);
               allPatients.clear();
+              nbPatient = 0;
               int nbPatientSaute = 0;
               for (var m in responsebody) {
                 try {
@@ -90,8 +90,6 @@ class ListPatientsController extends GetxController {
               search();
               updateLoading(newloading: false, newerror: false);
             } else {
-              allPatients.clear();
-              nbPatient = 0;
               updateLoading(newloading: false, newerror: true);
               AppData.mySnackBar(
                   title: 'Liste des Patients',
@@ -102,8 +100,6 @@ class ListPatientsController extends GetxController {
           })
           .catchError((error) {
             print("erreur : $error");
-            allPatients.clear();
-            nbPatient = 0;
             updateLoading(newloading: false, newerror: true);
             AppData.mySnackBar(
                 title: 'Liste des Patients',

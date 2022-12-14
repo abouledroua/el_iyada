@@ -53,6 +53,7 @@ class ListBilanController extends GetxController {
               for (var m in responsebody) {
                 try {
                   ord = Consultation(
+                      typeConv: 0,
                       date_consult: m['DATE_CONSULTATION'],
                       exercice: int.parse(m['EXERCICE']),
                       idConsult: int.parse(m['ID_CONSULTATION']));
