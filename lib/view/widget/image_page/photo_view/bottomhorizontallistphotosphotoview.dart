@@ -27,7 +27,7 @@ class BottomHorizontalListPhotosPhotoView extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemCount: myImages.length,
                       itemBuilder: (context, index) {
-                        final double imageWidth = (AppSizes.minWidth / 5) -
+                        final double imageWidth = (AppSizes.widthScreen / 5) -
                             (4.0 * (myImages.length - 1));
                         final bool thisPhoto = (index == controller.index);
                         var data = myImages[index].data;

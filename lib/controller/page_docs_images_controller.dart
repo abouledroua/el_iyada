@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'dart:convert';
-import '../core/class/gest_photos.dart';
+import 'gest_photos_controller.dart';
 import '../core/class/my_image.dart';
 import '../core/class/image_upload.dart';
 import '../core/constant/color.dart';
@@ -55,8 +55,10 @@ class PageDocsImagesController extends GetxController {
                 try {
                   type = int.parse(m['TYPE']);
                   img = MyImage(
+                      cb: cb,
                       error: false,
                       add: false,
+                      deleting: false,
                       data: base64Decode(''),
                       loading: true,
                       type: int.parse(m['TYPE']),
@@ -118,46 +120,41 @@ class PageDocsImagesController extends GetxController {
     print("url=$url");
     Uri myUri = Uri.parse(url);
     chemin = chemin.replaceAll("\\", "\\\\");
-    http
-        .post(myUri, body: {"CHEMIN": chemin})
-        .timeout(Duration(seconds: AppData.timeOut))
+    http.post(myUri, body: {"CHEMIN": chemin})
+        //   .timeout(Duration(seconds: AppData.timeOut))
         .then((response) async {
-          if (response.statusCode == 200) {
-            String img64 = jsonDecode(response.body);
-            Uint8List decodedBytes = base64Decode(img64);
-            updateData(
-                index: index,
-                type: type,
-                decodedBytes: decodedBytes,
-                error: false);
-            update();
-          } else {
-            updateData(
-                index: index,
-                type: type,
-                decodedBytes: base64Decode(''),
-                error: true);
-            updateBooleans(newloading: false, newerror: true);
-            //     AppData.mySnackBar(
-            //        title: 'Liste des Images',
-            //        message: "Probleme de Connexion avec le serveur 2 !!!",
-            //        color: AppColor.red);
-            print('Probleme de Connexion avec le serveur !!!');
-          }
-        })
-        .catchError((error) {
-          print("erreur : $error");
-          updateData(
-              index: index,
-              type: type,
-              decodedBytes: base64Decode(''),
-              error: true);
-          updateBooleans(newloading: false, newerror: true);
-          //    AppData.mySnackBar(
-          //      title: 'Liste des Images',
-          //     message: "Probleme de Connexion avec le serveur 1 !!!",
-          //     color: AppColor.red);
-        });
+      if (response.statusCode == 200) {
+        String img64 = jsonDecode(response.body);
+        Uint8List decodedBytes = base64Decode(img64);
+        updateData(
+            index: index, type: type, decodedBytes: decodedBytes, error: false);
+        update();
+      } else {
+        updateData(
+            index: index,
+            type: type,
+            decodedBytes: base64Decode(''),
+            error: true);
+        updateBooleans(newloading: false, newerror: true);
+        //     AppData.mySnackBar(
+        //        title: 'Liste des Images',
+        //        message: "Probleme de Connexion avec le serveur 2 !!!",
+        //        color: AppColor.red);
+        print('Probleme de Connexion avec le serveur !!!');
+      }
+    }).catchError((error) {
+      print("erreur : $error");
+      updateData(
+          index: index,
+          type: type,
+          decodedBytes: base64Decode(''),
+          error: true);
+      updateBooleans(newloading: false, newerror: true);
+      //    AppData.mySnackBar(
+      //      title: 'Liste des Images',
+      //     message: "Probleme de Connexion avec le serveur 1 !!!",
+      //     color: AppColor.red);
+    });
   }
 
   updateData(
@@ -189,6 +186,23 @@ class PageDocsImagesController extends GetxController {
     }
   }
 
+  updateDeleting({required int type, required int index, required bool del}) {
+    switch (type) {
+      case 1:
+        echo[index].deleting = del;
+        break;
+      case 2:
+        ecg[index].deleting = del;
+        break;
+      case 3:
+        docs[index].deleting = del;
+        break;
+      case 4:
+        radio[index].deleting = del;
+        break;
+    }
+  }
+
   @override
   void onInit() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -204,14 +218,28 @@ class PageDocsImagesController extends GetxController {
 
   pickPhoto({required ImageSource source, required int type}) async {
     late ImagePicker imagePicker = ImagePicker();
-    XFile? image = await imagePicker.pickImage(source: source);
+    if (source == ImageSource.camera) {
+      XFile? image = await imagePicker.pickImage(source: source);
+      await traiterImage(image: image, type: type);
+    } else {
+      List<XFile>? images = await imagePicker.pickMultiImage();
+      for (var image in images) {
+        await traiterImage(image: image, type: type);
+      }
+    }
+  }
+
+  traiterImage({required XFile? image, required int type}) async {
     if (image != null) {
       Uint8List imageData = await image.readAsBytes();
       MyImageUpload upoadImage = MyImageUpload(
           cb: cb, chemin: image.path, data: imageData, type: type);
-      GestImages.myImages.add(upoadImage);
+      GestImagesController contr = Get.find();
+      contr.addImage(upoadImage);
       MyImage myImage = MyImage(
+          cb: cb,
           error: false,
+          deleting: false,
           data: imageData,
           loading: false,
           add: true,
@@ -265,5 +293,60 @@ class PageDocsImagesController extends GetxController {
         isScrollControlled: true,
         enterBottomSheetDuration: const Duration(milliseconds: 600),
         exitBottomSheetDuration: const Duration(milliseconds: 600));
+  }
+
+  Future deleteImage(
+      {required String chemin,
+      required int type,
+      required int id,
+      required int index,
+      required String cb}) async {
+    updateDeleting(del: true, index: index, type: type);
+    String serverDir = AppData.getServerDirectory();
+    var url = "$serverDir/DELETE_IMAGE.php";
+    print("url=$url");
+    Uri myUri = Uri.parse(url);
+    chemin = chemin.replaceAll("\\", "\\\\");
+    http.post(myUri, body: {
+      "CHEMIN": chemin,
+      "ID": id.toString(),
+      "ID_MALADE": cb,
+    }).then((response) async {
+      if (response.statusCode == 200) {
+        try {
+          var responsebody = jsonDecode(response.body);
+          if (responsebody == "1") {
+            switch (type) {
+              case 1:
+                echo.removeAt(index);
+                update();
+                break;
+              case 2:
+                ecg.removeAt(index);
+                update();
+                break;
+              case 3:
+                docs.removeAt(index);
+                update();
+                break;
+              case 4:
+                radio.removeAt(index);
+                update();
+                break;
+            }
+          } else {
+            updateDeleting(del: false, index: index, type: type);
+          }
+        } catch (e) {
+          updateDeleting(del: false, index: index, type: type);
+        }
+      } else {
+        updateDeleting(del: false, index: index, type: type);
+        print('Probleme de Connexion avec le serveur !!!');
+      }
+    }).catchError((error) {
+      updateDeleting(del: false, index: index, type: type);
+      print("erreur : $error");
+    });
   }
 }

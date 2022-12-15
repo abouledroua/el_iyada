@@ -10,9 +10,7 @@ class SelectCameraGalleryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double vlHormargin = (AppSizes.widthScreen > AppSizes.maxWidth)
-        ? (AppSizes.widthScreen - AppSizes.maxWidth) / 3
-        : 0;
+    double vlHormargin = (AppSizes.widthScreen - 1000) / 3;
     vlHormargin += 10;
     return Container(
         margin: EdgeInsets.symmetric(horizontal: vlHormargin),
@@ -26,7 +24,7 @@ class SelectCameraGalleryWidget extends StatelessWidget {
                     InkWell(
                         onTap: onTapGallery,
                         child: Ink(
-                            width: AppSizes.widthScreen / 3,
+                            width: AppSizes.widthScreen / 4,
                             child: Column(children: const [
                               Padding(
                                   padding: EdgeInsets.all(8.0),
@@ -36,7 +34,7 @@ class SelectCameraGalleryWidget extends StatelessWidget {
                     InkWell(
                         onTap: onTapCamera,
                         child: Ink(
-                            width: AppSizes.widthScreen / 3,
+                            width: AppSizes.widthScreen / 4,
                             child: Column(children: const [
                               Padding(
                                   padding: EdgeInsets.all(8.0),

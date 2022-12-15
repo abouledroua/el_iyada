@@ -40,7 +40,7 @@ class AppData {
   static void mySnackBar({required title, required message, required color}) {
     Get.snackbar(title, message,
         snackPosition: SnackPosition.BOTTOM,
-        maxWidth: AppSizes.minWidth,
+        maxWidth: AppSizes.widthScreen,
         margin: const EdgeInsets.symmetric(horizontal: 10),
         backgroundColor: color,
         colorText: AppColor.white);

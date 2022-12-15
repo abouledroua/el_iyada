@@ -68,7 +68,9 @@ class ListBilansWidget extends StatelessWidget {
                 itemCount: controller.listConsult.length,
                 itemBuilder: (context, index) => InkWell(
                     onTap: () {
-                      controller.updateSelectionDate(index);
+                      if (!controller.loadingDetails) {
+                        controller.updateSelectionDate(index);
+                      }
                     },
                     child: Ink(
                         child: Container(

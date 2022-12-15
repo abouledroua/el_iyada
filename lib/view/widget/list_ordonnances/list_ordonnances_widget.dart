@@ -111,7 +111,12 @@ class ListOrdonnancesWidget extends StatelessWidget {
                     itemCount: controller.listConsult.length,
                     itemBuilder: (context, index) => InkWell(
                         onTap: () {
-                          controller.updateSelectionDate(index);
+                          if ((!controller.loadingDetailsA &&
+                                  controller.ab == 1) ||
+                              (!controller.loadingDetailsB &&
+                                  controller.ab == 2)) {
+                            controller.updateSelectionDate(index);
+                          }
                         },
                         child: Ink(
                             child: Container(
@@ -131,7 +136,7 @@ class ListOrdonnancesWidget extends StatelessWidget {
                                       if (controller
                                               .listConsult[index].typeConv ==
                                           2)
-                                        Icon(Icons.double_arrow_rounded),
+                                        Icon(Icons.copyright),
                                       if (controller
                                               .listConsult[index].typeConv ==
                                           2)

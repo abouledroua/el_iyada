@@ -15,6 +15,7 @@ class SearchPatient extends StatelessWidget {
   Widget build(BuildContext context) {
     ListPatientsController controller = Get.find();
     controller.updateQuery("");
+    print('AppSizes.widthScreen=${AppSizes.widthScreen}');
     return MyWidget(
         title: "Rechercher un Patient",
         child: GestureDetector(

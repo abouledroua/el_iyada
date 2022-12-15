@@ -17,6 +17,7 @@ class ListRDVs extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyWidget(
         actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.open_in_browser)),
           IconButton(
               onPressed: () {
                 ListPatientsController contr = Get.find();

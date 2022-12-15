@@ -1,11 +1,13 @@
 // ignore_for_file: avoid_print
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controller/page_docs_images_controller.dart';
 import '../../../core/class/my_image.dart';
 import '../../../core/constant/color.dart';
 import '../../../core/constant/image_asset.dart';
+import '../../../core/constant/sizes.dart';
 import '../../screen/photoview.dart';
 
 class ListImagesWidget extends StatelessWidget {
@@ -44,7 +46,7 @@ class ListImagesWidget extends StatelessWidget {
                           }
                         },
                         child: Container(
-                            padding: const EdgeInsets.all(2.0),
+                            //padding: const EdgeInsets.all(2.0),
                             decoration: BoxDecoration(
                                 color:
                                     item.add ? AppColor.grey : AppColor.white,
@@ -69,8 +71,8 @@ class ListImagesWidget extends StatelessWidget {
                                               Image.memory(item.data))),
                                   if (item.error)
                                     Positioned(
-                                        top: -6,
-                                        right: -6,
+                                        top: -10,
+                                        right: -10,
                                         child: Container(
                                             padding: const EdgeInsets.all(4),
                                             child: IconButton(
@@ -84,10 +86,52 @@ class ListImagesWidget extends StatelessWidget {
                                                 },
                                                 icon: Icon(Icons
                                                     .download_for_offline_outlined)))),
+                                  Visibility(
+                                      visible: item.deleting,
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Center(
+                                              child: CircularProgressIndicator
+                                                  .adaptive())),
+                                      replacement: Positioned(
+                                          top: -10,
+                                          left: -10,
+                                          child: IconButton(
+                                              onPressed: () {
+                                                AwesomeDialog(
+                                                        context: Get.context!,
+                                                        dialogType:
+                                                            DialogType.warning,
+                                                        title: 'Suppression',
+                                                        btnOkText: "Oui",
+                                                        btnCancelText: "Non",
+                                                        width: AppSizes
+                                                                .widthScreen /
+                                                            2,
+                                                        btnCancelOnPress: () {},
+                                                        btnOkOnPress: () async {
+                                                          await controller
+                                                              .deleteImage(
+                                                                  chemin: item
+                                                                      .chemin,
+                                                                  type: type,
+                                                                  id: item.id,
+                                                                  index: index,
+                                                                  cb: item.cb);
+                                                        },
+                                                        showCloseIcon: true,
+                                                        desc:
+                                                            'Voulez-vous supprimer cette image ?')
+                                                    .show();
+                                              },
+                                              icon: Icon(
+                                                  Icons
+                                                      .disabled_by_default_outlined,
+                                                  color: AppColor.red)))),
                                   if (item.add)
                                     Positioned(
-                                        top: -3,
-                                        right: -3,
+                                        top: -10,
+                                        right: -10,
                                         child: Container(
                                             padding: const EdgeInsets.all(4),
                                             child: CircularProgressIndicator

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import '../core/constant/data.dart';
 import '../core/constant/sizes.dart';
 import '../view/screen/list_rdvs.dart';
+import 'gest_photos_controller.dart';
 import 'list_patients_controller.dart';
 import 'list_rdvs_controller.dart';
 
@@ -41,6 +42,7 @@ class WelcomeController extends GetxController {
             var responsebody = jsonDecode(response.body);
             if (responsebody == "1") {
               print('------------------ Connected ---------------');
+              Get.put(GestImagesController());
               ListRDVsController rdvContr = Get.put(ListRDVsController());
               Timer.periodic(
                   Duration(seconds: 15), (timer) => rdvContr.getListRdvToday());

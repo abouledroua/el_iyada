@@ -1,8 +1,10 @@
+import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controller/keyboard_controller.dart';
 import '../../controller/page_docs_images_controller.dart';
 import '../../core/constant/color.dart';
+import '../widget/bottom_bar_upload_images_widget.dart';
 import '../widget/info_row.dart';
 import 'image_patient_view.dart';
 import '../widget/docs&images/menu_docs_images.dart';
@@ -27,7 +29,13 @@ class PageDocsImages extends StatelessWidget {
                 PageDocsImagesController contr = Get.find();
                 contr.addImage();
               },
-              icon: Icon(Icons.camera, color: AppColor.white)),
+              icon: Icon(Icons.upload, color: AppColor.white)),
+          IconButton(
+              onPressed: () {
+                LaunchApp.openApp(
+                    androidPackageName: 'com.android.chrome', openStore: true);
+              },
+              icon: Icon(Icons.image_search_outlined, color: AppColor.white)),
           IconButton(
               onPressed: () {
                 PageDocsImagesController contr = Get.find();
@@ -51,7 +59,8 @@ class PageDocsImages extends StatelessWidget {
                   builder: (controller) => Visibility(
                       visible: !controller.keyboadrShow,
                       child: MenuDocsImages())),
-              SizedBox(height: 6)
+              SizedBox(height: 3),
+              BottomBarUploadImagesWidget(),
             ])));
   }
 
