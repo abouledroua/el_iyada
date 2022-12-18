@@ -136,10 +136,6 @@ class PageDocsImagesController extends GetxController {
             decodedBytes: base64Decode(''),
             error: true);
         updateBooleans(newloading: false, newerror: true);
-        //     AppData.mySnackBar(
-        //        title: 'Liste des Images',
-        //        message: "Probleme de Connexion avec le serveur 2 !!!",
-        //        color: AppColor.red);
         print('Probleme de Connexion avec le serveur !!!');
       }
     }).catchError((error) {
@@ -150,10 +146,6 @@ class PageDocsImagesController extends GetxController {
           decodedBytes: base64Decode(''),
           error: true);
       updateBooleans(newloading: false, newerror: true);
-      //    AppData.mySnackBar(
-      //      title: 'Liste des Images',
-      //     message: "Probleme de Connexion avec le serveur 1 !!!",
-      //     color: AppColor.red);
     });
   }
 

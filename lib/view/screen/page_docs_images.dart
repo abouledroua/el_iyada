@@ -33,7 +33,8 @@ class PageDocsImages extends StatelessWidget {
           IconButton(
               onPressed: () {
                 LaunchApp.openApp(
-                    androidPackageName: 'com.android.chrome', openStore: true);
+                    androidPackageName: 'com.intsig.camscanner',
+                    openStore: true);
               },
               icon: Icon(Icons.image_search_outlined, color: AppColor.white)),
           IconButton(

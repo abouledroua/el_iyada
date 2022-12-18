@@ -24,120 +24,113 @@ class ListImagesWidget extends StatelessWidget {
               : (type == 3)
                   ? controller.docs
                   : controller.radio;
-      return RefreshIndicator(
-          onRefresh: controller.getImages,
-          child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: GridView.builder(
-                  itemCount: listImage.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 5,
-                      crossAxisSpacing: 20),
-                  itemBuilder: (context, index) {
-                    var item = listImage[index];
-                    return GestureDetector(
-                        onTap: () {
-                          if (!item.error && !item.loading) {
-                            print('select image');
-                            int i = listImage.indexOf(item);
-                            Get.to(() =>
-                                PhotoViewPage(index: i, myImages: listImage));
-                          }
-                        },
-                        child: Container(
-                            //padding: const EdgeInsets.all(2.0),
-                            decoration: BoxDecoration(
-                                color:
-                                    item.add ? AppColor.grey : AppColor.white,
-                                borderRadius: BorderRadius.circular(5),
-                                border: Border.all(
-                                    color: Color.fromARGB(255, 199, 196, 196))),
-                            child: Visibility(
-                                visible: item.loading,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Center(
-                                        child: CircularProgressIndicator
-                                            .adaptive())),
-                                replacement: Stack(children: [
-                                  Center(
-                                      child: Visibility(
-                                          visible: item.error,
-                                          child: Image.asset(
-                                              AppImageAsset.noImage,
-                                              fit: BoxFit.cover),
-                                          replacement:
-                                              Image.memory(item.data))),
-                                  if (item.error)
-                                    Positioned(
-                                        top: -10,
-                                        right: -10,
-                                        child: Container(
-                                            padding: const EdgeInsets.all(4),
-                                            child: IconButton(
-                                                onPressed: () {
-                                                  item.loading = true;
-                                                  controller.update();
-                                                  controller.getImageData(
-                                                      chemin: item.chemin,
-                                                      type: type,
-                                                      index: index);
-                                                },
-                                                icon: Icon(Icons
-                                                    .download_for_offline_outlined)))),
-                                  Visibility(
-                                      visible: item.deleting,
-                                      child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Center(
-                                              child: CircularProgressIndicator
-                                                  .adaptive())),
-                                      replacement: Positioned(
-                                          top: -10,
-                                          left: -10,
-                                          child: IconButton(
-                                              onPressed: () {
-                                                AwesomeDialog(
-                                                        context: Get.context!,
-                                                        dialogType:
-                                                            DialogType.warning,
-                                                        title: 'Suppression',
-                                                        btnOkText: "Oui",
-                                                        btnCancelText: "Non",
-                                                        width: AppSizes
-                                                                .widthScreen /
+      return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: GridView.builder(
+              itemCount: listImage.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, mainAxisSpacing: 5, crossAxisSpacing: 20),
+              itemBuilder: (context, index) {
+                var item = listImage[index];
+                return GestureDetector(
+                    onTap: () {
+                      if (!item.error && !item.loading) {
+                        print('select image');
+                        int i = listImage.indexOf(item);
+                        Get.to(
+                            () => PhotoViewPage(index: i, myImages: listImage));
+                      }
+                    },
+                    child: Container(
+                        //padding: const EdgeInsets.all(2.0),
+                        decoration: BoxDecoration(
+                            color: item.add ? AppColor.grey : AppColor.white,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(
+                                color: Color.fromARGB(255, 199, 196, 196))),
+                        child: Visibility(
+                            visible: item.loading,
+                            child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                    child:
+                                        CircularProgressIndicator.adaptive())),
+                            replacement: Stack(children: [
+                              Center(
+                                  child: Visibility(
+                                      visible: item.error,
+                                      child: Image.asset(AppImageAsset.noImage,
+                                          fit: BoxFit.cover),
+                                      replacement: Image.memory(item.data))),
+                              if (item.error)
+                                Positioned(
+                                    top: -10,
+                                    right: -10,
+                                    child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        child: IconButton(
+                                            onPressed: () {
+                                              item.loading = true;
+                                              controller.update();
+                                              controller.getImageData(
+                                                  chemin: item.chemin,
+                                                  type: type,
+                                                  index: index);
+                                            },
+                                            icon: Icon(Icons
+                                                .download_for_offline_outlined)))),
+                              Visibility(
+                                  visible: item.deleting,
+                                  child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Center(
+                                          child: CircularProgressIndicator
+                                              .adaptive())),
+                                  replacement: Positioned(
+                                      top: -10,
+                                      left: -10,
+                                      child: IconButton(
+                                          onPressed: () {
+                                            AwesomeDialog(
+                                                    context: Get.context!,
+                                                    dialogType:
+                                                        DialogType.warning,
+                                                    title: 'Suppression',
+                                                    btnOkText: "Oui",
+                                                    btnCancelText: "Non",
+                                                    width:
+                                                        AppSizes.widthScreen /
                                                             2,
-                                                        btnCancelOnPress: () {},
-                                                        btnOkOnPress: () async {
-                                                          await controller
-                                                              .deleteImage(
-                                                                  chemin: item
-                                                                      .chemin,
-                                                                  type: type,
-                                                                  id: item.id,
-                                                                  index: index,
-                                                                  cb: item.cb);
-                                                        },
-                                                        showCloseIcon: true,
-                                                        desc:
-                                                            'Voulez-vous supprimer cette image ?')
-                                                    .show();
-                                              },
-                                              icon: Icon(
-                                                  Icons
-                                                      .disabled_by_default_outlined,
-                                                  color: AppColor.red)))),
-                                  if (item.add)
-                                    Positioned(
-                                        top: -10,
-                                        right: -10,
-                                        child: Container(
-                                            padding: const EdgeInsets.all(4),
-                                            child: CircularProgressIndicator
-                                                .adaptive()))
-                                ]))));
-                  })));
+                                                    btnCancelOnPress: () {},
+                                                    btnOkOnPress: () async {
+                                                      await controller
+                                                          .deleteImage(
+                                                              chemin:
+                                                                  item.chemin,
+                                                              type: type,
+                                                              id: item.id,
+                                                              index: index,
+                                                              cb: item.cb);
+                                                    },
+                                                    showCloseIcon: true,
+                                                    desc:
+                                                        'Voulez-vous supprimer cette image ?')
+                                                .show();
+                                          },
+                                          icon: Icon(
+                                              Icons
+                                                  .disabled_by_default_outlined,
+                                              color: AppColor.red)))),
+                              if (item.add)
+                                Positioned(
+                                    top: -10,
+                                    right: -10,
+                                    child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        child: CircularProgressIndicator
+                                            .adaptive()))
+                            ]))));
+              }));
     });
   }
 

@@ -10,8 +10,7 @@ class SelectCameraGalleryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double vlHormargin = (AppSizes.widthScreen - 1000) / 3;
-    vlHormargin += 10;
+    double vlHormargin = 10;
     return Container(
         margin: EdgeInsets.symmetric(horizontal: vlHormargin),
         color: AppColor.white,

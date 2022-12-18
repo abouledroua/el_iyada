@@ -52,7 +52,7 @@ class WelcomePage extends StatelessWidget {
                             child: TextFormField(
                                 controller: controller.txtServerIp,
                                 maxLines: 1,
-                                keyboardType: TextInputType.number,
+                                keyboardType: TextInputType.text,
                                 textInputAction: TextInputAction.next,
                                 decoration: InputDecoration(
                                     hintText: "Adresse du serveur",
